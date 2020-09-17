@@ -1,5 +1,7 @@
+package sword_to_offer;
+
 import java.util.ArrayList;
-import java.util.List;
+
 //输入一个链表，按链表从尾到头的顺序返回一个ArrayList。
 public class JZ3 {
     public static ArrayList<Integer> printListFromTailToHead(ListNode listNode) {

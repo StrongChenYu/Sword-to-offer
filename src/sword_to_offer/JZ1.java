@@ -1,3 +1,5 @@
+package sword_to_offer;
+
 //find number in an two-dimensional array
 public class JZ1 {
 

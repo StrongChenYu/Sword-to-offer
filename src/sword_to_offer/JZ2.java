@@ -1,3 +1,5 @@
+package sword_to_offer;
+
 //replace space to %20
 public class JZ2 {
 
