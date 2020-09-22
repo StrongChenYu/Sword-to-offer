@@ -1,5 +1,7 @@
 package sword_to_offer;
 
+
+public class JZ6 {
     public int minNumberInRotateArray(int [] array) {
         if (array == null || array.length == 0) return 0;
         
