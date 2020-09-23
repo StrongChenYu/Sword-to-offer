@@ -21,9 +21,24 @@ public class SortTest {
 
     @Test
     public void quickSortTest() {
+        int testTime = 10000;
+        int maxSize = 10000;
+        int maxValue = 100000;
 
+        QuickSort m = new QuickSort();
+        sortTest(m, testTime, maxSize, maxValue);
     }
 
+
+    @Test
+    public void heapSortTest() {
+        int testTime = 10000;
+        int maxSize = 10000;
+        int maxValue = 100000;
+
+        HeapSort m = new HeapSort();
+        sortTest(m, testTime, maxSize, maxValue);
+    }
 
     public void sortTest(Sort sort, int testTime, int maxSize, int maxValue) {
 
