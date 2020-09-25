@@ -4,18 +4,25 @@ public class JZ13 {
     public void reOrderArray(int [] array) {
         if (array == null || array.length <= 1) return;
 
-        int left = -1;
-        int right = array.length;
-        int cur = 0;
-
-        while (cur < right) {
-            int num = array[cur];
-            if (num % 2 == 0) {
-                //偶数
-
-            } {
-                //奇数
+        int leftIndex = -1;
+        for (int i = 0; i < array.length; i++) {
+            int num = array[i];
+            if (num % 2 == 1) {
+                int j = i;
+                while (j > leftIndex + 1) {
+                    array[j] = array[j - 1];
+                    j--;
+                }
+                array[++leftIndex] = num;
             }
         }
+    }
+
+    public static void main(String[] args) {
+        JZ13 jz13 = new JZ13();
+        int[] a = new int[]{3,2,1,3,45,3};
+        jz13.reOrderArray(a);
+
+        System.out.println(a);
     }
 }
