@@ -11,12 +11,21 @@ public class JZ19 {
         int row1 = 0, col1 = 0;
         int row2 = matrix.length - 1, col2 = matrix[0].length - 1;
 
-        while (row1 < row2 || col1 < col2) {
-            int i = row1, j = col1;
-            while (j <= col2) ret.add(matrix[i][j]);
-             ret.add(matrix[i][col2]);
-            for (int i = col2; i > col1; i--) ret.add(matrix[row2][i]);
-            for (int i = row2; i > row1; i--) ret.add(matrix[i][col1]);
+        while (row1 <= row2 && col1 <= col2) {
+            if (row1 == row2) {
+                for (int i = col1; i <= col2; i++) {
+                    ret.add(matrix[row1][i]);
+                }
+            } else if (col1 == col2) {
+                for (int i = row1; i <= row2; i++) {
+                    ret.add(matrix[i][col1]);
+                }
+            } else {
+                for (int i = col1; i < col2; i++) ret.add(matrix[row1][i]);
+                for (int i = row1; i < row2; i++) ret.add(matrix[i][col2]);
+                for (int i = col2; i > col1; i--) ret.add(matrix[row2][i]);
+                for (int i = row2; i > row1; i--) ret.add(matrix[i][col1]);
+            }
 
             row1++;
             col1++;
@@ -38,7 +47,8 @@ public class JZ19 {
 //        };
 
         int [][] matrix = new int[][] {
-                {1,2,4,5,6}
+                {1,4,6},
+                {2,5,9}
         };
 
         List<Integer> is = jz19.printMatrix(matrix);
