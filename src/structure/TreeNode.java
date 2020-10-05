@@ -1,4 +1,4 @@
-package sword_to_offer;
+package structure;
 
 public class TreeNode {
      public int val;

@@ -1,4 +1,4 @@
-package sword_to_offer;
+package structure;
 
 public class ListNode {
    public int val;

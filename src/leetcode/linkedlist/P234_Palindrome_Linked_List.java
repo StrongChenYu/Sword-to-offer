@@ -1,6 +1,6 @@
-package leetcode;
+package leetcode.linkedlist;
 
-import sword_to_offer.ListNode;
+import structure.ListNode;
 
 public class P234_Palindrome_Linked_List {
     public boolean isPalindrome(ListNode head) {

@@ -1,9 +1,11 @@
 package sword_to_offer;
 
+import structure.ListNode;
+
 public class JZ16 {
 
     //简单一次过
-    public ListNode Merge(ListNode list1,ListNode list2) {
+    public ListNode Merge(ListNode list1, ListNode list2) {
         ListNode h1 = list1;
         ListNode h2 = list2;
         ListNode ret = new ListNode(0);

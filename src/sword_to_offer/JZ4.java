@@ -6,8 +6,10 @@ package sword_to_offer;
 例如输入前序遍历序列{1,2,4,7,3,5,6,8}和中序遍历序列{4,7,2,1,5,3,8,6}，则重建二叉树并返回。
  */
 
+import structure.TreeNode;
+
 public class JZ4 {
-    public TreeNode reConstructBinaryTree(int [] pre,int [] in) {
+    public TreeNode reConstructBinaryTree(int [] pre, int [] in) {
         if (pre == null || in == null) return null;
         if (pre.length != in.length) return null;
         if (pre.length == 0) return null;

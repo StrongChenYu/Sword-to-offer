@@ -1,5 +1,7 @@
 package sword_to_offer;
 
+import structure.TreeNode;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;

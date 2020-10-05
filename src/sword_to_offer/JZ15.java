@@ -1,5 +1,7 @@
 package sword_to_offer;
 
+import structure.ListNode;
+
 public class JZ15 {
 
     public ListNode ReverseList(ListNode head) {

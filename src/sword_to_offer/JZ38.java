@@ -1,5 +1,7 @@
 package sword_to_offer;
 
+import structure.TreeNode;
+
 public class JZ38 {
 
     public int TreeDepth(TreeNode root) {
