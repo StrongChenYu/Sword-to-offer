@@ -25,25 +25,25 @@ public class P145_Binary_Tree_Postorder_Traversal {
 
 
     //非递归版本
-    public List<Integer> postorderTraversal(TreeNode root) {
-        List<Integer> res = new ArrayList<>();
-        if (root == null) return res;
+        public List<Integer> postorderTraversal(TreeNode root) {
+            List<Integer> res = new ArrayList<>();
+            if (root == null) return res;
 
-        Stack<TreeNode> stack = new Stack<>();
-        Stack<Integer> stackRes = new Stack<>();
+            Stack<TreeNode> stack = new Stack<>();
+            Stack<Integer> stackRes = new Stack<>();
 
-        stack.push(root);
-        while (!stack.isEmpty()) {
-            TreeNode node = stack.pop();
+            stack.push(root);
+            while (!stack.isEmpty()) {
+                TreeNode node = stack.pop();
 
-            stackRes.push(node.val);
-            if (node.left != null) stack.push(node.left);
-            if (node.right != null) stack.push(node.right);
+                stackRes.push(node.val);
+                if (node.left != null) stack.push(node.left);
+                if (node.right != null) stack.push(node.right);
+            }
+            while (!stackRes.isEmpty()) {
+                res.add(stackRes.pop());
+            }
+
+            return res;
         }
-        while (!stackRes.isEmpty()) {
-            res.add(stackRes.pop());
-        }
-
-        return res;
-    }
 }
