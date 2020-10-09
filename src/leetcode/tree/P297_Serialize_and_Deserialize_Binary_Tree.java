@@ -5,6 +5,10 @@ import structure.TreeNode;
 import java.util.LinkedList;
 import java.util.Queue;
 
+
+
+//二叉树的的序列化和反序列化
+//剑指offer61题
 public class P297_Serialize_and_Deserialize_Binary_Tree {
 
     public String serialize(TreeNode root) {
@@ -65,6 +69,9 @@ public class P297_Serialize_and_Deserialize_Binary_Tree {
         String res = "1_2_4_#_#_5_#_#_3_6_#_#_7_#_#_";
 
         p.deserialize(res);
+
+        Queue<TreeNode> nodes = new LinkedList<>();
+        nodes.offer(null);
     }
 
 }
