@@ -1,4 +1,4 @@
-package leetcode;
+package leetcode.linkedlist;
 
 
 //荷兰国旗问题，快排思路简单版
