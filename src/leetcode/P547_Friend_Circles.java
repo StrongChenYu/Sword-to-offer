@@ -1,5 +1,6 @@
 package leetcode;
 
+// not finish
 public class P547_Friend_Circles {
 
     public int findCircleNum(int[][] M) {
