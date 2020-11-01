@@ -4,30 +4,26 @@ import structure.TreeNode;
 
 public class JZ17 {
     public boolean HasSubtree(TreeNode root1, TreeNode root2) {
-        if (root1 != null && root2 == null) return false;
+        if (root2 == null) return false;
 
-        return preOrder(root1, root2);
-    }
-
-    public boolean preOrder(TreeNode root1, TreeNode root2) {
-        if (root1 == null && root2 == null) return true;
-        if (root1 == null && root2 != null) return false;
-        if (root1 != null && root2 == null) return true;
+        //这种情况下root2必不为空，所以只需判断root1就可以了
+        if (root1 == null) return false;
 
         if (root1.val == root2.val) {
-            return helpFunc(root1.left, root2.left) || helpFunc(root1.right, root2.left);
-        } else {
-            return preOrder(root1.left, root2) || preOrder(root1.right, root2);
+            boolean res = isSameTree(root1.left, root2.left) && isSameTree(root1.right, root2.right);
+
+            if (res) return true;
         }
+
+        return HasSubtree(root1.left, root2) || HasSubtree(root1.right, root2);
     }
 
-    public boolean helpFunc(TreeNode root1, TreeNode root2) {
-        if (root1 == null && root2 == null) return true;
-        if (root1 != null && root2 == null) return true;
+    public boolean isSameTree(TreeNode root1, TreeNode root2) {
+        if (root2 == null) return true;
+        if (root1 == null) return false;
 
-        if (root1 != null && root1.val == root2.val)
-            return helpFunc(root1.left, root2.left) && helpFunc(root1.right, root2.right);
-
+        if (root1.val == root2.val)
+            return isSameTree(root1.left, root2.left) && isSameTree(root1.right, root2.right);
 
         return false;
     }
@@ -43,9 +39,9 @@ public class JZ17 {
         root1.left.right.right = new TreeNode(7);
 
 
-        TreeNode root2 = new TreeNode(8);
-        root2.left = new TreeNode(9);
-        root2.right = new TreeNode(2);
+        TreeNode root2 = new TreeNode(9);
+        //root2.left = new TreeNode(4);
+        //root2.right = new TreeNode(7);
 
         JZ17 jz17 = new JZ17();
 
