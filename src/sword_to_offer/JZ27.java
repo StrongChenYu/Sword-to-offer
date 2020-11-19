@@ -1,9 +1,6 @@
 package sword_to_offer;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class JZ27 {
     //先把使用交换来设定顺序
@@ -16,22 +13,19 @@ public class JZ27 {
             return res;
         }
 
-        Set<String> resSet = new HashSet<>();
+        Set<String> resSet = new LinkedHashSet<>();
         StringBuilder sb = new StringBuilder(str);
         for (int i = 0; i < sb.length(); i++) {
             char cur = str.charAt(i);
+            sb.delete(i, i + 1);
 
-            sb.setCharAt(i, sb.charAt(0));
-            sb.setCharAt(0, cur);
-
-            ArrayList<String> besidesOnes = Permutation(sb.substring(1));
+            ArrayList<String> besidesOnes = Permutation(sb.toString());
             for (String s : besidesOnes) {
                 String temp = cur + s;
                 resSet.add(temp);
             }
 
-            sb.setCharAt(0, sb.charAt(i));
-            sb.setCharAt(i, cur);
+            sb.insert(i, cur);
         }
 
         return new ArrayList<>(resSet);
@@ -39,8 +33,23 @@ public class JZ27 {
 
     public static void main(String[] args) {
         JZ27 jz27 = new JZ27();
-        ArrayList<String> res = jz27.Permutation("aab");
+        ArrayList<String> res = jz27.Permutation("abc");
         System.out.println(res);
+
+//        StringBuilder sb = new StringBuilder("abcd");
+//        sb.delete(3,4);
+//        System.out.println(sb.toString());
+//
+//        sb.insert(3,"d");
+//        System.out.println(sb.toString());
+
+
+//        Set<String> testSet = new LinkedHashSet<>();
+//        for (int i = 0; i < 10; i++) {
+//            testSet.add((10 - i) + "");
+//        }
+//
+//        System.out.println(testSet);
     }
 
 
