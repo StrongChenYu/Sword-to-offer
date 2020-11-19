@@ -4,7 +4,8 @@ import java.util.*;
 
 public class JZ27 {
     //先把使用交换来设定顺序
-    public ArrayList<String> Permutation(String str) {
+    //bad solution
+    public ArrayList<String> PermutationBad(String str) {
         if (str == null) return null;
         if (str.equals("")) return new ArrayList<>();
         if (str.length() == 1) {
@@ -30,6 +31,39 @@ public class JZ27 {
 
         return new ArrayList<>(resSet);
     }
+
+    public ArrayList<String> Permutation(String str) {
+        if (str == null || str.length() == 0) return new ArrayList<>();
+        ArrayList<String> res = new ArrayList<>();
+
+        Recursion(str.toCharArray(), 0, res);
+        Collections.sort(res);
+
+        return res;
+    }
+
+    public void Recursion(char[] chars, int starIndex, ArrayList<String> res) {
+        if (chars.length - 1 == starIndex) {
+            res.add(String.valueOf(chars));
+        } else {
+            HashSet<Character> charSet = new HashSet<>();
+            for (int i = starIndex; i < chars.length; i++) {
+                if (!charSet.contains(chars[i])) {
+                    charSet.add(chars[i]);
+                    swap(chars, starIndex, i);
+                    Recursion(chars, starIndex + 1, res);
+                    swap(chars, i, starIndex);
+                }
+            }
+        }
+    }
+
+    public void swap(char[] chars, int i, int j) {
+        char temp = chars[i];
+        chars[i] = chars[j];
+        chars[j] = temp;
+    }
+
 
     public static void main(String[] args) {
         JZ27 jz27 = new JZ27();
