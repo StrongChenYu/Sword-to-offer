@@ -2,7 +2,31 @@ package sword_to_offer;
 
 public class JZ28 {
 
-    public int MoreThanHalfNum_Solution(int [] array) {
+    public int MoreThanHalfNum_Solution(int[] array) {
+        if (array == null || array.length == 0) return 0;
+
+        int major = 0;
+        int count = 0;
+
+        for (int i = 0; i < array.length; i++) {
+            int n = array[i];
+            if (n == major || count == 0) {
+                major = n;
+                count++;
+            } else {
+                count--;
+            }
+        }
+
+        count = 0;
+        for (int i = 0; i < array.length; i++) {
+            if (major == array[i]) count++;
+        }
+
+        return count > array.length / 2 ? major : 0;
+    }
+
+    public int MoreThanHalfNum_Solution_2(int [] array) {
         if (array == null || array.length == 0) return 0;
 
         int l = 0;
@@ -54,8 +78,9 @@ public class JZ28 {
 
     public static void main(String[] args) {
         JZ28 jz28 = new JZ28();
-        int[] a = new int[]{1,2,8,7,1,4,5,3,5};
-        jz28.partition(a, a.length - 2, a.length - 2, a.length);
+        int[] a = new int[]{1,2,3,3,3,3};
+        //jz28.partition(a, a.length - 2, a.length - 2, a.length);
         //printArray(a);
+        System.out.println(jz28.MoreThanHalfNum_Solution(a));
     }
 }
