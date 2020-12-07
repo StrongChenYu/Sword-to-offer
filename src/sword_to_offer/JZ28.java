@@ -44,23 +44,6 @@ public class JZ28 {
         }
     }
 
-    /**
-     * 提取公共部分，不过这样的话比上面多进行了一轮循环，还是不太好
-     * @param nums
-     * @param num
-     * @param lo
-     * @param hi
-     * @return
-     */
-    private int countInRange(int[] nums, int num, int lo, int hi) {
-        int count = 0;
-        for (int i = lo; i <= hi; i++) {
-            if (nums[i] == num) {
-                count++;
-            }
-        }
-        return count;
-    }
 
     /**
      * 选举人算法，这个算法能判断出一个数组里面，最多的人数
@@ -100,28 +83,37 @@ public class JZ28 {
     public int MoreThanHalfNum_Solution_QuickSort(int [] array) {
         if (array == null || array.length == 0) return 0;
 
+        int n = array.length;
+
         int l = 0;
-        int r = array.length;
-        int cur = l;
-        while (cur < r) {
-            partition(array, cur, l, r);
-            int curNum = array[cur];
-            if (array[r / 2] == curNum){
-                return curNum;
-            }
-            else if (array[r / 2] > curNum) {
-                partition(array, cur, l, r);
+        int r = n;
+        int pRes = partition(array, l, l, r);
+        //n-1/2这样算出来的点会落在下分位点上，如果落在上分位点，结果必出错
+        int middle = (n - 1) / 2;
+
+        while (pRes != middle) {
+
+            if (pRes < middle) {
+                l = pRes + 1;
+                pRes = partition(array, pRes + 1, pRes + 1, r);
             } else {
-                partition(array, cur, l, r);
+                r = pRes;
+                pRes = partition(array, l, l, pRes - 1);
             }
         }
-        return 0;
+
+        int count = 0;
+        for (int i = 0; i < n; i++) {
+            if (array[i] == array[middle]) { count++; }
+        }
+
+        return count > n / 2 ? array[middle] : 0;
     }
 
 
     // from left to right-1, array[right] has nothing.
-    public void partition(int[] array, int index, int left, int right) {
-        if (left == right) return;
+    public int partition(int[] array, int index, int left, int right) {
+        if (left == right) return left;
 
         int targetNum = array[index];
 
@@ -139,6 +131,9 @@ public class JZ28 {
                 cur++;
             }
         }
+
+        //l+1是肯定是换的那个元素的位置
+        return l + 1;
     }
 
     public void swap(int[] array, int i, int j) {
@@ -149,9 +144,9 @@ public class JZ28 {
 
     public static void main(String[] args) {
         JZ28 jz28 = new JZ28();
-        int[] a = new int[]{1,2,3,3,3,3};
+        int[] a = new int[]{1,3,4,5,2,2,2,2,2};
         //jz28.partition(a, a.length - 2, a.length - 2, a.length);
         //printArray(a);
-        System.out.println(jz28.MoreThanHalfNum_Solution_DAC(a));
+        System.out.println(jz28.MoreThanHalfNum_Solution_QuickSort(a));
     }
 }
