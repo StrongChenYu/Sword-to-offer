@@ -1,64 +1,162 @@
 package sword_to_offer;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 
-//输入n个整数，找出其中最小的K个数。例如输入4,5,1,6,2,7,3,8这8个数字，则最小的4个数字是1,2,3,4。
+import java.util.ArrayList;
+
 public class JZ29 {
 
-    //直接排序，完了返回，时间复杂度O(n*log(n))
-    public ArrayList<Integer> GetLeastNumbers_Solution_QuickSort(int [] input, int k) {
+    //快排思想解决
+    //这似乎就是TOPK算法
+    public ArrayList<Integer> GetLeastNumbers_Solution(int [] input, int k) {
         if (input == null || input.length == 0 || k > input.length) return new ArrayList<>();
-        Arrays.sort(input);
+        return RecursionHelp(input, 0, input.length, k);
+    }
+
+    public ArrayList<Integer> RecursionHelp(int[] input, int l, int r, int k) {
+        System.out.println("l = " + l + "r = " + r + " k =" + k);
+
+        int index = l + ((r - l) >> 1);
+        int leftBound = partition(input, l, r);
         ArrayList<Integer> res = new ArrayList<>();
-        for (int i = 0; i < k && i < input.length; i++) {
-            res.add(input[i]);
+
+        if (l > r) return res;
+        if (l == r) {
+            res.add(input[l]);
+            return res;
+        }
+
+        int leftNum = leftBound - l;
+        if (leftNum >= k) {
+            for (int i = 0; i < k; i++) res.add(input[i + l]);
+        } else {
+            for (int i = l; i < leftBound; i++) res.add(input[i]);
+
+            ArrayList<Integer> rightRes = RecursionHelp(input, leftBound, r, k - leftNum);
+            res.addAll(rightRes);
+        }
+
+        return res;
+    }
+
+    //范围l<= x <r
+    public int partition(int[] input, int l, int r) {
+        if (l >= r) return -1;
+
+        int index  = r - 1;
+        int targetNum = input[index];
+
+        int left = l - 1;
+        for (int cur = l; cur < r; cur++) {
+            if (input[cur] < targetNum) {
+                swap(input, ++left, cur);
+            }
+        }
+
+        //这里记得最后把index位置的值换回去
+        swap(input, ++left, index);
+        return left;
+    }
+
+
+
+
+    //用堆对思想解决
+    public ArrayList<Integer> GetLeastNumbers_Solution_Heap(int [] input, int k) {
+        ArrayList<Integer> res = new ArrayList<>();
+        if (input == null || input.length == 0 || input.length < k) return res;
+
+        for (int i = 1; i < input.length; i++) {
+            heapInsert(input, i);
+        }
+
+        int headIndex = input.length - 1;
+        for (int i = 0; i < k; i++) {
+            res.add(heapDelete(input, headIndex--));
         }
         return res;
     }
 
+    public int heapDelete(int[] input, int headIndex) {
+        int res = input[0];
+        swap(input, 0, headIndex--);
+
+        int index = 0;
+        int left = (index << 1) + 1;
+        int right = left + 1;
+        while (left <= headIndex && (input[index] > input[left] || input[index] > input[right])) {
+            int swapIndex = 0;
+
+            if (left <= headIndex && right <= headIndex) {
+                swapIndex = input[left] < input[right] ? left : right;
+            } else if (left > headIndex) {
+                swapIndex = right;
+            } else {
+                swapIndex = left;
+            }
+
+            swap(input, index, swapIndex);
+
+            index = swapIndex;
+            left = (index << 1) + 1;
+            right = left + 2;
+        }
+
+        return res;
+    }
+
     /**
-     * 用堆的思想解决，我自己实现堆
+     * 这是比较好的做法因为，上面的比较累两次left，index，right之间的情况，但是下面这种方法的话，只比较累一次
      * @param input
-     * @param k
-     * @return
+     * @param insertIndex
      */
-    public ArrayList<Integer> GetLeastNumbers_Solution(int [] input, int k) {
-        if (input == null || input.length == 0 || k > input.length) return new ArrayList<>();
+//    public void heapify(int[]arr, int index, int heapSize) {
+//        int left = index * 2 + 1;
+//
+//        while (left < heapSize) {
+//            int right = left + 1;
+//            int maxLeftRightIndex = right < heapSize && arr[left] < arr[right] ? right : left;
+//
+//            int maxIndex = arr[maxLeftRightIndex] > arr[index] ? maxLeftRightIndex : index;
+//
+//            if (maxIndex == index) {
+//                break;
+//            }
+//
+//            swap(arr, index, maxIndex);
+//            index = maxIndex;
+//            left = maxIndex * 2 + 1;
+//        }
+//
+//    }
 
-        int n = input.length;
-        //构建最小堆
-        for (int i = 1; i < n; i++) {
-            heapInsert(input, i);
-        }
-        for (int i = 0; i < n; i++) {
-            System.out.print(input[i]);
-        }
-        System.out.println();
 
-        return null;
+    private void heapInsert(int[] input, int insertIndex) {
+        int parentIndex = insertIndex >> 1;
+        while (parentIndex < insertIndex && input[parentIndex] > input[insertIndex]) {
+            swap(input, parentIndex, insertIndex);
+            insertIndex = parentIndex;
+            parentIndex = insertIndex >> 1;
+        }
     }
 
-
-    public void heapInsert(int[] input, int heapIndex) {
-        int parentIndex = heapIndex / 2;
-        while (parentIndex < heapIndex && input[parentIndex] > input[heapIndex]) {
-            System.out.println(input[parentIndex]);
-            swap(input, parentIndex, heapIndex);
-            heapIndex = parentIndex;
-            parentIndex = heapIndex >> 1;
-        }
-    }
-
-    public void swap(int[] input, int i, int j) {
+    private void swap(int[] input, int i, int j) {
         int temp = input[i];
         input[i] = input[j];
         input[j] = temp;
     }
 
+    public static void pringArray(int[] a) {
+        for (int num : a) {
+            System.out.print(num + " ");
+        }
+        System.out.println();
+    }
+
+
     public static void main(String[] args) {
         JZ29 jz29 = new JZ29();
-        int[] a = new int[]{1,2,7,6,9,1};
-        System.out.println(jz29.GetLeastNumbers_Solution(a, 4));
+        int[] a = new int[]{0,0,1,3,4,5,0,7,6,7};
+        System.out.println(jz29.GetLeastNumbers_Solution(a, 9));
+        pringArray(a);
     }
 }
