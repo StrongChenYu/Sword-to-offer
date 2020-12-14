@@ -1,6 +1,8 @@
 package sword_to_offer;
 
 
+import sort_algorithm.ArrayHelp;
+
 import java.util.ArrayList;
 
 public class JZ29 {
@@ -13,23 +15,24 @@ public class JZ29 {
     }
 
     public ArrayList<Integer> RecursionHelp(int[] input, int l, int r, int k) {
-        System.out.println("l = " + l + "r = " + r + " k =" + k);
+        ArrayHelp.printLR(l, r);
+        System.out.println("k = " + k);
 
-        int leftBound = partition(input, l, r);
+        int rightBound = partition(input, l, r);
         ArrayList<Integer> res = new ArrayList<>();
 
-        if (l >= r) return res;
+        if (l >= r || k == 0) return res;
 
-        int leftNum = leftBound - l;
+        int leftNum = rightBound - l;
         if (leftNum == k) {
             for (int i = 0; i < k; i++) res.add(input[i + l]);
         } else if (leftNum > k) {
-            return RecursionHelp(input, l, leftBound, k);
+            return RecursionHelp(input, l, rightBound - 1, k);
         } else {
-            for (int i = l; i < leftBound; i++) {
+            for (int i = l; i < rightBound; i++) {
                 res.add(input[i]);
             }
-            ArrayList<Integer> rightRes = RecursionHelp(input, leftBound, r, k - leftNum);
+            ArrayList<Integer> rightRes = RecursionHelp(input, rightBound, r, k - leftNum);
             res.addAll(rightRes);
         }
 
@@ -38,20 +41,19 @@ public class JZ29 {
 
     //范围l<= x <r
     public int partition(int[] input, int l, int r) {
-        if (l >= r) return -1;
 
         int index  = r - 1;
         int targetNum = input[index];
 
         int left = l;
         for (int cur = l; cur < r - 1; cur++) {
-            if (input[cur] < targetNum) {
+            if (input[cur] <= targetNum) {
                 swap(input, left++, cur);
             }
         }
 
         //这里记得最后把index位置的值换回去
-        swap(input, left, index);
+        swap(input, left++, index);
         return left;
     }
 
@@ -155,6 +157,6 @@ public class JZ29 {
         JZ29 jz29 = new JZ29();
         int[] a = new int[]{4,5,1,6,2,7,3,8};
         System.out.println(jz29.GetLeastNumbers_Solution(a, 4));
-        pringArray(a);
+        ArrayHelp.printArr(a);
     }
 }

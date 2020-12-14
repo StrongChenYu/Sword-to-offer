@@ -7,4 +7,8 @@ public class ArrayHelp {
         }
         System.out.println();
     }
+
+    public static void printLR(int l, int r) {
+        System.out.println("l = " + l + " r = " + r);
+    }
 }
