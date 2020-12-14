@@ -15,22 +15,20 @@ public class JZ29 {
     public ArrayList<Integer> RecursionHelp(int[] input, int l, int r, int k) {
         System.out.println("l = " + l + "r = " + r + " k =" + k);
 
-        int index = l + ((r - l) >> 1);
         int leftBound = partition(input, l, r);
         ArrayList<Integer> res = new ArrayList<>();
 
-        if (l > r) return res;
-        if (l == r) {
-            res.add(input[l]);
-            return res;
-        }
+        if (l >= r) return res;
 
         int leftNum = leftBound - l;
-        if (leftNum >= k) {
+        if (leftNum == k) {
             for (int i = 0; i < k; i++) res.add(input[i + l]);
+        } else if (leftNum > k) {
+            return RecursionHelp(input, l, leftBound, k);
         } else {
-            for (int i = l; i < leftBound; i++) res.add(input[i]);
-
+            for (int i = l; i < leftBound; i++) {
+                res.add(input[i]);
+            }
             ArrayList<Integer> rightRes = RecursionHelp(input, leftBound, r, k - leftNum);
             res.addAll(rightRes);
         }
@@ -45,15 +43,15 @@ public class JZ29 {
         int index  = r - 1;
         int targetNum = input[index];
 
-        int left = l - 1;
-        for (int cur = l; cur < r; cur++) {
+        int left = l;
+        for (int cur = l; cur < r - 1; cur++) {
             if (input[cur] < targetNum) {
-                swap(input, ++left, cur);
+                swap(input, left++, cur);
             }
         }
 
         //这里记得最后把index位置的值换回去
-        swap(input, ++left, index);
+        swap(input, left, index);
         return left;
     }
 
@@ -155,8 +153,8 @@ public class JZ29 {
 
     public static void main(String[] args) {
         JZ29 jz29 = new JZ29();
-        int[] a = new int[]{0,0,1,3,4,5,0,7,6,7};
-        System.out.println(jz29.GetLeastNumbers_Solution(a, 9));
+        int[] a = new int[]{4,5,1,6,2,7,3,8};
+        System.out.println(jz29.GetLeastNumbers_Solution(a, 4));
         pringArray(a);
     }
 }

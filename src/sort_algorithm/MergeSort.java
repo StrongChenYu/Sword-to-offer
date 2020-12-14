@@ -5,56 +5,43 @@ public class MergeSort implements Sort{
 
     @Override
     public void sort(int[] arr) {
-        if (arr == null || arr.length <= 1) return;
-
-        mergeSort(arr, 0, arr.length - 1);
+        mergeSort(arr, 0, arr.length);
     }
 
     public void mergeSort(int[] arr, int l, int r) {
         if (l >= r) return;
-
-        int mid = l + ((r - l) >> 1);
-
-        //注意递归是i
-        mergeSort(arr, l, mid);
-        mergeSort(arr, mid + 1, r);
-        merge(arr, l, mid, r);
+        System.out.println("l = " + l + "r = " + r);;
+        int middle = l + ((r - l) >> 1);
+        mergeSort(arr, l ,middle);
+        mergeSort(arr, middle, r);
+        merge(arr, l, middle, r);
     }
 
-    public void merge(int[] arr, int l, int mid, int r) {
-        int[] newArr = new int[r - l + 1];
+    private void merge(int[] arr, int l, int middle, int r) {
+        int[] temp = new int[r - l];
 
-        int left = l;
-        int right = mid + 1;
-        int index = 0;
-        while (left <= mid && right <= r) {
-            if (arr[left] > arr[right]) {
-                newArr[index++] = arr[right++];
-            } else {
-                newArr[index++] = arr[left++];
-            }
+        int curL = l;
+        int curR = middle;
+        int i = 0;
+        while (curL < middle && curR < r) {
+            temp[i++] = arr[curL] > arr[curR] ? arr[curR++] : arr[curL++];
         }
 
-        while (left <= mid) {
-            newArr[index++] = arr[left++];
-        }
+        while (curL < middle) temp[i++] = arr[curL++];
+        while (curR < r) temp[i++] = arr[curR++];
 
-        while (right <= r) {
-            newArr[index++] = arr[right++];
-        }
-
-        for (int i = 0; i < newArr.length; i++) {
-            arr[i + l] = newArr[i];
+        for (int k = 0; k < temp.length; k++) {
+            arr[l + k] = temp[k];
         }
     }
 
     public static void main(String[] args) {
         MergeSort m = new MergeSort();
 
-        int[] array = new int[]{600,5,1,3,1,2};
+        int[] array1 = new int[]{1,2,5,1,1,2};
+        int[] array2 = new int[]{4,3,2,1,3};
+        m.sort(array1);
 
-        m.sort(array);
-
-        System.out.println(array);
+        ArrayHelp.printArr(array1);
     }
 }

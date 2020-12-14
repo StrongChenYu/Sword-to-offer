@@ -8,46 +8,59 @@ public class HeapSort implements Sort{
     public void sort(int[] arr) {
         if (arr == null || arr.length <= 1) return;
 
-        for (int i = 0; i < arr.length; i++) {
+        for (int i = 1; i < arr.length; i++) {
             heapInsert(arr, i);
         }
 
         int heapSize = arr.length;
+        int cur = 0;
         swap(arr, 0, --heapSize);
         while (heapSize > 0) {
-            heapify(arr, 0, heapSize);
+            heapAdjust(arr, 0, heapSize);
             swap(arr, 0, --heapSize);
         }
-
     }
 
-    public void heapInsert(int[] arr, int index) {
-        //index > 0 的条件可以省略，因为如果index是1的话，两个值必定相等，无法进入循环
-        while (arr[(index - 1) / 2] < arr[index]) {
-            int fa = (index - 1) / 2;
-            swap(arr, index, fa);
-            index = fa;
+    /**
+     * wrong case:
+     * 0,1,2
+     * 2 / 2 = 1;
+     * 1 / 2 = 0;
+     *
+     * right case:
+     * 0,1,2
+     * (2-1) / 2 = 0;
+     * (1-1) / 2 = 0;
+     *
+     * so: parent = (insertIndex - 1) / 2;
+     * @param arr
+     * @param insertIndex
+     */
+    private void heapInsert(int[] arr, int insertIndex) {
+        int parent = (insertIndex - 1) / 2;
+        while (arr[insertIndex] > arr[parent]) {
+            swap(arr, insertIndex, parent);
+            insertIndex = parent;
+            parent = (insertIndex - 1) / 2;
         }
     }
 
-    public void heapify(int[]arr, int index, int heapSize) {
-        int left = index * 2 + 1;
+    private void heapAdjust(int[] arr, int cur, int heapSize) {
+        int leftIndex = (cur << 1) + 1;
+        int rightIndex = 0;
+        int maxIndex = 0;
+        while (leftIndex < heapSize) {
+            rightIndex = leftIndex + 1;
+            if (rightIndex < heapSize) maxIndex = arr[leftIndex] >= arr[rightIndex] ? leftIndex : rightIndex;
+            else maxIndex = leftIndex;
 
-        while (left < heapSize) {
-            int right = left + 1;
-            int maxLeftRightIndex = right < heapSize && arr[left] < arr[right] ? right : left;
+            if (arr[maxIndex] <= arr[cur]) break;
 
-            int maxIndex = arr[maxLeftRightIndex] > arr[index] ? maxLeftRightIndex : index;
+            swap(arr, maxIndex, cur);
 
-            if (maxIndex == index) {
-                break;
-            }
-
-            swap(arr, index, maxIndex);
-            index = maxIndex;
-            left = maxIndex * 2 + 1;
+            cur = maxIndex;
+            leftIndex = (cur << 1) + 1;
         }
-
     }
 
 
@@ -59,7 +72,7 @@ public class HeapSort implements Sort{
 
     public static void main(String[] args) {
         HeapSort h = new HeapSort();
-        int[] a = new int[]{1,2,3,4,1,3,14,1,414,1,41,41,41,1};
+        int[] a = new int[]{1,5,6,7,89,6,4,7,8,5,6,9,6,9,6,9,6};
         h.sort(a);
         ArrayHelp.printArr(a);
     }

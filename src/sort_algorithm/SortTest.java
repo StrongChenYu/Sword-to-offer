@@ -4,6 +4,7 @@ package sort_algorithm;
 import org.junit.Assert;
 import org.junit.Test;
 
+import javax.swing.*;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 
@@ -49,10 +50,17 @@ public class SortTest {
             sort.sort(arr);
             absoluteCorrectSort(arr1);
 
+            ArrayHelp.printArr(arr);
+            ArrayHelp.printArr(arr1);
+
+
             Assert.assertArrayEquals(arr, arr1);
+
         }
 
     }
+
+
 
     private int[] copyArray(int[] arr) {
         int[] newArr = new int[arr.length];
