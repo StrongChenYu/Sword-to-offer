@@ -13,24 +13,26 @@ public class JZ29 {
     }
 
     public ArrayList<Integer> RecursionHelp(int[] input, int l, int r, int k) {
-        System.out.println("l = " + l + "r = " + r + " k =" + k);
-
         int index = l + ((r - l) >> 1);
-        int leftBound = partition(input, l, r);
+        int leftBound = partition(input, index, l, r)[0];
+
+        System.out.println("l = " + l + "r = " + r + " k = " + k + " leftBoud = " + leftBound);
+
+
         ArrayList<Integer> res = new ArrayList<>();
 
-        if (l > r) return res;
-        if (l == r) {
-            res.add(input[l]);
-            return res;
-        }
+        if (l >= r) return res;
 
         int leftNum = leftBound - l;
-        if (leftNum >= k) {
-            for (int i = 0; i < k; i++) res.add(input[i + l]);
-        } else {
+        if (leftNum > k) {
+            System.out.println("1");
+            return RecursionHelp(input, l, leftBound, k);
+        } else if (leftNum == k) {
+            System.out.println("2");
             for (int i = l; i < leftBound; i++) res.add(input[i]);
-
+        } else {
+            System.out.println("3");
+            for (int i = l; i < leftBound; i++) res.add(input[i]);
             ArrayList<Integer> rightRes = RecursionHelp(input, leftBound, r, k - leftNum);
             res.addAll(rightRes);
         }
@@ -38,27 +40,42 @@ public class JZ29 {
         return res;
     }
 
-    //范围l<= x <r
-    public int partition(int[] input, int l, int r) {
-        if (l >= r) return -1;
-
-        int index  = r - 1;
-        int targetNum = input[index];
-
+    public int[] partition(int[] arr, int index, int l, int r) {
+        int targetNum = arr[index];
         int left = l - 1;
-        for (int cur = l; cur < r; cur++) {
-            if (input[cur] < targetNum) {
-                swap(input, ++left, cur);
+        int right = r;
+        int cur = l;
+
+        while (cur < right) {
+            if (targetNum == arr[cur]) {
+                cur++;
+            } else if (targetNum > arr[cur]) {
+                swap(arr, ++left, cur++);
+            } else {
+                swap(arr, --right, cur);
             }
         }
 
-        //这里记得最后把index位置的值换回去
-        swap(input, ++left, index);
-        return left;
+        return new int[]{left + 1, right};
     }
 
-
-
+    //范围l<= x <r
+//    public int partition(int[] input, int l, int r) {
+//
+//        int index  = r - 1;
+//        int targetNum = input[index];
+//
+//        int left = l - 1;
+//        for (int cur = l; cur < r; cur++) {
+//            if (input[cur] < targetNum) {
+//                swap(input, ++left, cur);
+//            }
+//        }
+//
+//        //这里记得最后把index位置的值换回去
+//        swap(input, ++left, index);
+//        return left;
+//    }
 
     //用堆对思想解决
     public ArrayList<Integer> GetLeastNumbers_Solution_Heap(int [] input, int k) {

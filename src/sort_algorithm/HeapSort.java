@@ -8,48 +8,43 @@ public class HeapSort implements Sort{
     public void sort(int[] arr) {
         if (arr == null || arr.length <= 1) return;
 
-        for (int i = 0; i < arr.length; i++) {
+        for (int i = 1; i < arr.length; i++) {
             heapInsert(arr, i);
         }
 
         int heapSize = arr.length;
-        swap(arr, 0, --heapSize);
         while (heapSize > 0) {
-            heapify(arr, 0, heapSize);
             swap(arr, 0, --heapSize);
-        }
-
-    }
-
-    public void heapInsert(int[] arr, int index) {
-        //index > 0 的条件可以省略，因为如果index是1的话，两个值必定相等，无法进入循环
-        while (arr[(index - 1) / 2] < arr[index]) {
-            int fa = (index - 1) / 2;
-            swap(arr, index, fa);
-            index = fa;
+            heapify(arr, 0, heapSize);
         }
     }
 
-    public void heapify(int[]arr, int index, int heapSize) {
+    private void heapInsert(int[] arr, int insertIndex) {
+        int parentIndex = (insertIndex - 1) / 2 ;
+        while (arr[parentIndex] < arr[insertIndex]) {
+            swap(arr, parentIndex, insertIndex);
+            insertIndex = parentIndex;
+            parentIndex = (insertIndex - 1) / 2;
+        }
+    }
+
+    private void heapify(int[] arr, int index, int heapSize) {
         int left = index * 2 + 1;
-
         while (left < heapSize) {
             int right = left + 1;
-            int maxLeftRightIndex = right < heapSize && arr[left] < arr[right] ? right : left;
-
-            int maxIndex = arr[maxLeftRightIndex] > arr[index] ? maxLeftRightIndex : index;
-
-            if (maxIndex == index) {
-                break;
+            int maxLR = left;
+            if (right < heapSize) {
+                maxLR = arr[left] < arr[right] ? right : left;
             }
 
-            swap(arr, index, maxIndex);
-            index = maxIndex;
-            left = maxIndex * 2 + 1;
+            int maxIndex = arr[index] < arr[maxLR] ? maxLR : index;
+            if (maxIndex == index) return;
+
+            swap(arr, index, maxLR);
+            index = maxLR;
+            left = index * 2 + 1;
         }
-
     }
-
 
     public void swap(int []arr, int i, int j) {
         int temp = arr[i];

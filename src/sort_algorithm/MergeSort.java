@@ -7,46 +7,34 @@ public class MergeSort implements Sort{
     public void sort(int[] arr) {
         if (arr == null || arr.length <= 1) return;
 
-        mergeSort(arr, 0, arr.length - 1);
+        mergeSort(arr, 0, arr.length);
     }
 
-    public void mergeSort(int[] arr, int l, int r) {
-        if (l >= r) return;
+    private void mergeSort(int[] arr, int l, int r) {
+        if (r - l <= 1) return;
 
-        int mid = l + ((r - l) >> 1);
-
-        //注意递归是i
-        mergeSort(arr, l, mid);
-        mergeSort(arr, mid + 1, r);
-        merge(arr, l, mid, r);
+        int middle = l + ((r - l) >> 1);
+        mergeSort(arr, l, middle);
+        mergeSort(arr, middle, r);
+        merge(arr, l, middle, r);
     }
 
-    public void merge(int[] arr, int l, int mid, int r) {
-        int[] newArr = new int[r - l + 1];
+    private void merge(int[] arr, int l, int middle, int r) {
+        int[] temp = new int[r - l];
 
         int left = l;
-        int right = mid + 1;
-        int index = 0;
-        while (left <= mid && right <= r) {
-            if (arr[left] > arr[right]) {
-                newArr[index++] = arr[right++];
-            } else {
-                newArr[index++] = arr[left++];
-            }
-        }
+        int right = middle;
+        int cur = 0;
+        while (left < middle && right < r) temp[cur++] = arr[left] > arr[right] ? arr[right++] : arr[left++];
 
-        while (left <= mid) {
-            newArr[index++] = arr[left++];
-        }
+        while (left < middle) temp[cur++] = arr[left++];
+        while (right < r) temp[cur++] = arr[right++];
 
-        while (right <= r) {
-            newArr[index++] = arr[right++];
-        }
-
-        for (int i = 0; i < newArr.length; i++) {
-            arr[i + l] = newArr[i];
+        for (int i = 0; i < temp.length; i++) {
+            arr[i + l] = temp[i];
         }
     }
+
 
     public static void main(String[] args) {
         MergeSort m = new MergeSort();
@@ -55,6 +43,6 @@ public class MergeSort implements Sort{
 
         m.sort(array);
 
-        System.out.println(array);
+        ArrayHelp.printArr(array);
     }
 }

@@ -4,50 +4,50 @@ public class QuickSort implements Sort{
 
     @Override
     public void sort(int[] arr) {
-        if (arr == null || arr.length <= 1) return;
-
-        int length = arr.length;
-        quickSort(arr, 0, length - 1);
+        quickSort(arr, 0, arr.length);
     }
 
     public void quickSort(int[] arr, int l, int r) {
-        if (l >= r || l < 0) return;
+        if (l >= r) return;
 
-        int[] mids = partition(arr, l, r);
-        quickSort(arr, l, mids[0]);
-        quickSort(arr, mids[1], r);
+        int index = l + ((r - l) >> 1);
+        int[] bound = partition(arr, index, l, r);
+
+        quickSort(arr, l, bound[0]);
+        quickSort(arr, bound[1], r);
     }
 
-    public int[] partition(int arr[], int l, int r) {
-        int[] mids = new int[]{l ,r};
-        int num = arr[r];
 
+    public int[] partition(int[] arr, int index, int l, int r) {
+        int targetNum = arr[index];
         int left = l - 1;
         int right = r;
         int cur = l;
 
         while (cur < right) {
-            if (arr[cur] < num) {
-                swap(arr, ++left, cur++);
-            } else if (arr[cur] > num) {
-                swap(arr, --right, cur);
-            } else {
+            if (targetNum == arr[cur]) {
                 cur++;
+            } else if (targetNum > arr[cur]) {
+                swap(arr, ++left, cur++);
+            } else {
+                swap(arr, --right, cur);
             }
         }
 
-        swap(arr, right++, r);
-
-        mids[0] = left;
-        mids[1] = right;
-        return mids;
+        return new int[]{left + 1, right};
     }
 
-
-    public void swap(int[] arr, int i, int j) {
+    public void swap(int []arr, int i, int j) {
         int temp = arr[i];
         arr[i] = arr[j];
         arr[j] = temp;
+    }
+
+    public static void printArray(int[] arr) {
+        for (int num : arr) {
+            System.out.print(num + " ");
+        }
+        System.out.println();
     }
 
     public static void main(String[] args) {
@@ -55,9 +55,8 @@ public class QuickSort implements Sort{
         QuickSort q = new QuickSort();
 
         q.sort(arr);
+        printArray(arr);
     }
-
-
 
 }
 
