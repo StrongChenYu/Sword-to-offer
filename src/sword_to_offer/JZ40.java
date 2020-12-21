@@ -15,6 +15,7 @@ public class JZ40 {
 
         xor = xor & (-xor);
 
+
         num1[0] = 0;
         num2[0] = 0;
         for (int a : array) {
