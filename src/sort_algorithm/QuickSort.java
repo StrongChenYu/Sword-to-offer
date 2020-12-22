@@ -42,6 +42,13 @@ public class QuickSort implements Sort{
         arr[j] = temp;
     }
 
+    public static void printArray(int[] arr) {
+        for (int num : arr) {
+            System.out.print(num + " ");
+        }
+        System.out.println();
+    }
+
     public static void main(String[] args) {
         int[] arr = new int[]{4,1,2,3,4,3,1,4,1,1,23,4,5,4,2,2,3,5,3,1,1,2,3,4,5,6,7};
         QuickSort q = new QuickSort();
@@ -49,8 +56,6 @@ public class QuickSort implements Sort{
         q.sort(arr);
         ArrayHelp.printArr(arr);
     }
-
-
 
 }
 

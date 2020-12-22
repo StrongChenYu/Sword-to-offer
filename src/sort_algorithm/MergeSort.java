@@ -35,6 +35,7 @@ public class MergeSort implements Sort{
         }
     }
 
+
     public static void main(String[] args) {
         MergeSort m = new MergeSort();
 

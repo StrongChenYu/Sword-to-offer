@@ -7,8 +7,15 @@ import org.junit.Test;
 import javax.swing.*;
 import java.lang.reflect.Array;
 import java.util.Arrays;
+import java.util.Date;
 
 public class SortTest {
+
+    @Test
+    public void Test() {
+        Date date = new Date();
+        System.out.println(date.toString());
+    }
 
     @Test
     public void mergeSortTest() {

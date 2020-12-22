@@ -18,6 +18,7 @@ public class HeapSort implements Sort{
         while (heapSize > 0) {
             heapAdjust(arr, 0, heapSize);
             swap(arr, 0, --heapSize);
+            heapify(arr, 0, heapSize);
         }
     }
 
@@ -62,7 +63,6 @@ public class HeapSort implements Sort{
             leftIndex = (cur << 1) + 1;
         }
     }
-
 
     public void swap(int []arr, int i, int j) {
         int temp = arr[i];
