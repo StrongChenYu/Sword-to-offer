@@ -1,10 +1,9 @@
-package sort_algorithm;
+package algorithm.sort_algorithm;
 
 
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Date;
 

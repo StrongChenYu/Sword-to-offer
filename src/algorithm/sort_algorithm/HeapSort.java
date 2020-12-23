@@ -1,6 +1,4 @@
-package sort_algorithm;
-
-import java.lang.reflect.Array;
+package algorithm.sort_algorithm;
 
 public class HeapSort implements Sort{
 
