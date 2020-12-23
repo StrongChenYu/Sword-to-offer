@@ -1,6 +1,8 @@
 package sword_to_offer;
 
 
+import sort_algorithm.ArrayHelp;
+
 import java.util.ArrayList;
 
 public class JZ29 {
@@ -13,6 +15,26 @@ public class JZ29 {
     }
 
     public ArrayList<Integer> RecursionHelp(int[] input, int l, int r, int k) {
+<<<<<<< HEAD
+        ArrayHelp.printLR(l, r);
+        System.out.println("k = " + k);
+
+        int rightBound = partition(input, l, r);
+        ArrayList<Integer> res = new ArrayList<>();
+
+        if (l >= r || k == 0) return res;
+
+        int leftNum = rightBound - l;
+        if (leftNum == k) {
+            for (int i = 0; i < k; i++) res.add(input[i + l]);
+        } else if (leftNum > k) {
+            return RecursionHelp(input, l, rightBound - 1, k);
+        } else {
+            for (int i = l; i < rightBound; i++) {
+                res.add(input[i]);
+            }
+            ArrayList<Integer> rightRes = RecursionHelp(input, rightBound, r, k - leftNum);
+=======
         int index = l + ((r - l) >> 1);
         int leftBound = partition(input, index, l, r)[0];
 
@@ -34,12 +56,31 @@ public class JZ29 {
             System.out.println("3");
             for (int i = l; i < leftBound; i++) res.add(input[i]);
             ArrayList<Integer> rightRes = RecursionHelp(input, leftBound, r, k - leftNum);
+>>>>>>> 0eedd6c7ccf4438cfca39ba8028073265a346a87
             res.addAll(rightRes);
         }
 
         return res;
     }
 
+<<<<<<< HEAD
+    //范围l<= x <r
+    public int partition(int[] input, int l, int r) {
+
+        int index  = r - 1;
+        int targetNum = input[index];
+
+        int left = l;
+        for (int cur = l; cur < r - 1; cur++) {
+            if (input[cur] <= targetNum) {
+                swap(input, left++, cur);
+            }
+        }
+
+        //这里记得最后把index位置的值换回去
+        swap(input, left++, index);
+        return left;
+=======
     public int[] partition(int[] arr, int index, int l, int r) {
         int targetNum = arr[index];
         int left = l - 1;
@@ -57,6 +98,7 @@ public class JZ29 {
         }
 
         return new int[]{left + 1, right};
+>>>>>>> 0eedd6c7ccf4438cfca39ba8028073265a346a87
     }
 
     //范围l<= x <r
@@ -172,8 +214,8 @@ public class JZ29 {
 
     public static void main(String[] args) {
         JZ29 jz29 = new JZ29();
-        int[] a = new int[]{0,0,1,3,4,5,0,7,6,7};
-        System.out.println(jz29.GetLeastNumbers_Solution(a, 9));
-        pringArray(a);
+        int[] a = new int[]{4,5,1,6,2,7,3,8};
+        System.out.println(jz29.GetLeastNumbers_Solution(a, 4));
+        ArrayHelp.printArr(a);
     }
 }

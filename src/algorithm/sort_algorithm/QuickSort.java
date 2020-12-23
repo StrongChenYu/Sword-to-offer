@@ -8,36 +8,35 @@ public class QuickSort implements Sort{
     }
 
     public void quickSort(int[] arr, int l, int r) {
-        if (l >= r) return;
+        if (r - l <= 1) return;
 
         int index = l + ((r - l) >> 1);
-        int[] bound = partition(arr, index, l, r);
+        int[] bound = partition(arr, index, l ,r);
 
         quickSort(arr, l, bound[0]);
         quickSort(arr, bound[1], r);
     }
 
-
-    public int[] partition(int[] arr, int index, int l, int r) {
+    public int[] partition(int [] arr, int index, int l, int r) {
         int targetNum = arr[index];
+        int cur = l;
         int left = l - 1;
         int right = r;
-        int cur = l;
 
         while (cur < right) {
             if (targetNum == arr[cur]) {
                 cur++;
-            } else if (targetNum > arr[cur]) {
-                swap(arr, ++left, cur++);
+            } else if (targetNum < arr[cur]) {
+                swap(arr, cur, --right);
             } else {
-                swap(arr, --right, cur);
+                swap(arr, cur++, ++left);
             }
         }
 
         return new int[]{left + 1, right};
     }
 
-    public void swap(int []arr, int i, int j) {
+    public void swap(int[] arr, int i, int j) {
         int temp = arr[i];
         arr[i] = arr[j];
         arr[j] = temp;
@@ -55,7 +54,7 @@ public class QuickSort implements Sort{
         QuickSort q = new QuickSort();
 
         q.sort(arr);
-        printArray(arr);
+        ArrayHelp.printArr(arr);
     }
 
 }
