@@ -1,7 +1,6 @@
 package sword_to_offer;
 
 import org.junit.Test;
-import sort_algorithm.ArrayHelp;
 
 import java.util.ArrayList;
 
