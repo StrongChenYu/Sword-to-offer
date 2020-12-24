@@ -1,7 +1,9 @@
 package sword_to_offer;
 
 
-import sort_algorithm.ArrayHelp;
+
+
+import algorithm.sort_algorithm.ArrayHelp;
 
 import java.util.ArrayList;
 
