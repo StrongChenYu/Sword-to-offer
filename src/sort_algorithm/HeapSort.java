@@ -18,7 +18,6 @@ public class HeapSort implements Sort{
         while (heapSize > 0) {
             heapAdjust(arr, 0, heapSize);
             swap(arr, 0, --heapSize);
-            heapify(arr, 0, heapSize);
         }
     }
 

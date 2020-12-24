@@ -15,7 +15,6 @@ public class JZ29 {
     }
 
     public ArrayList<Integer> RecursionHelp(int[] input, int l, int r, int k) {
-<<<<<<< HEAD
         ArrayHelp.printLR(l, r);
         System.out.println("k = " + k);
 
@@ -34,36 +33,13 @@ public class JZ29 {
                 res.add(input[i]);
             }
             ArrayList<Integer> rightRes = RecursionHelp(input, rightBound, r, k - leftNum);
-=======
-        int index = l + ((r - l) >> 1);
-        int leftBound = partition(input, index, l, r)[0];
-
-        System.out.println("l = " + l + "r = " + r + " k = " + k + " leftBoud = " + leftBound);
-
-
-        ArrayList<Integer> res = new ArrayList<>();
-
-        if (l >= r) return res;
-
-        int leftNum = leftBound - l;
-        if (leftNum > k) {
-            System.out.println("1");
-            return RecursionHelp(input, l, leftBound, k);
-        } else if (leftNum == k) {
-            System.out.println("2");
-            for (int i = l; i < leftBound; i++) res.add(input[i]);
-        } else {
-            System.out.println("3");
-            for (int i = l; i < leftBound; i++) res.add(input[i]);
-            ArrayList<Integer> rightRes = RecursionHelp(input, leftBound, r, k - leftNum);
->>>>>>> 0eedd6c7ccf4438cfca39ba8028073265a346a87
             res.addAll(rightRes);
         }
 
         return res;
     }
 
-<<<<<<< HEAD
+
     //范围l<= x <r
     public int partition(int[] input, int l, int r) {
 
@@ -80,25 +56,6 @@ public class JZ29 {
         //这里记得最后把index位置的值换回去
         swap(input, left++, index);
         return left;
-=======
-    public int[] partition(int[] arr, int index, int l, int r) {
-        int targetNum = arr[index];
-        int left = l - 1;
-        int right = r;
-        int cur = l;
-
-        while (cur < right) {
-            if (targetNum == arr[cur]) {
-                cur++;
-            } else if (targetNum > arr[cur]) {
-                swap(arr, ++left, cur++);
-            } else {
-                swap(arr, --right, cur);
-            }
-        }
-
-        return new int[]{left + 1, right};
->>>>>>> 0eedd6c7ccf4438cfca39ba8028073265a346a87
     }
 
     //范围l<= x <r
