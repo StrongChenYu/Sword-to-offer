@@ -5,22 +5,18 @@ import org.junit.Test;
 
 public class JZ51 {
     public int[] multiply(int[] A) {
-        //or return new int[]{}
         if (A == null || A.length <= 1) return null;
-
-        //让B[i]保存除了i之外的所有元素的乘积
         int[] B = new int[A.length];
 
         B[0] = 1;
-        //第一步是计算i位置前的所有的乘积
         for (int i = 1; i < A.length; i++) {
             B[i] = B[i - 1] * A[i - 1];
         }
 
-        //第二步就是得把数组构建出来
         int temp = 1;
+        //因为B的第i位存储的是从0-i-1的乘积，所以从n-1开始计算
         for (int i = A.length - 2; i >= 0; i--) {
-            temp = temp * A[i + 1];
+            temp = A[i + 1] * temp;
             B[i] = B[i] * temp;
         }
 
