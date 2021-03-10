@@ -1,5 +1,8 @@
 package sword_to_offer;
 
+import org.junit.Assert;
+import org.junit.Test;
+
 //replace space to %20
 public class JZ2 {
 
@@ -26,9 +29,42 @@ public class JZ2 {
         return str.toString();
     }
 
+    public String replaceSpace (String s) {
+        StringBuilder sb = new StringBuilder(s);
+
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == ' ') sb.append("  ");
+        }
+
+        int cur = sb.length() - 1;
+        int ori = s.length() - 1;
+
+        while (cur != ori) {
+            char oriChar = sb.charAt(ori--);
+            if (oriChar == ' ') {
+                sb.setCharAt(cur--, '0');
+                sb.setCharAt(cur--, '2');
+                sb.setCharAt(cur--, '%');
+            } else {
+                sb.setCharAt(cur--, oriChar);
+            }
+        }
+
+        return sb.toString();
+    }
+
+    @Test
+    public void Test() {
+        Assert.assertEquals(replaceSpace(""), "");
+        Assert.assertEquals(replaceSpace(" "), "%20");
+        Assert.assertEquals(replaceSpace("a"), "a");
+        Assert.assertEquals(replaceSpace("    "), "%20%20%20%20");
+        Assert.assertEquals(replaceSpace("a b"), "a%20b");
+        Assert.assertEquals(replaceSpace("a b "), "a%20b%20");
+    }
+
 
     public static void main(String[] args) {
-        StringBuffer s = new StringBuffer("a        b");
-        System.out.println(replaceSpace(s));
+
     }
 }
