@@ -1,7 +1,6 @@
 package sword_to_offer;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import structure.ListNode;
 
@@ -11,38 +10,35 @@ public class JZ56 {
             {1,2,3,3,4,4,5},
             {1,2,2,3},
             {1,1,1,1,2},
-            {1,1,1,1,1,1}
+            {1,1,1,1,1,1},
+            {1,2,2,2,2,2}
     };
 
     private int[][] wanted = {
             {1,2,5},
             {1,3},
             {2},
-            {}
+            {},
+            {1}
     };
 
 
     public ListNode deleteDuplication(ListNode pHead) {
-        if (pHead == null || pHead.next == null) return pHead;
 
         ListNode head = new ListNode(0);
         head.next = pHead;
 
         ListNode pre = head;
-        ListNode cur = pHead;
-        while (cur != null) {
-            if (cur.next != null && cur.val == cur.next.val) {
-                while (cur.next != null && cur.val == cur.next.val) {
-                    cur = cur.next;
+        while (pHead != null) {
+            if (pHead.next != null && pHead.next.val == pHead.val) {
+                while (pHead.next != null && pHead.next.val == pHead.val) {
+                    pHead = pHead.next;
                 }
-
-                cur = cur.next;
-                pre.next = cur;
-
+                pre.next = pHead.next;
             } else {
-                pre = cur;
-                cur = cur.next;
+                pre = pHead;
             }
+            pHead = pHead.next;
         }
         return head.next;
     }
@@ -63,7 +59,7 @@ public class JZ56 {
 
     @Test
     public void Test() {
-        for (int i = 0; i < testData.length; i++) {
+        for (int i = 3; i < 4; i++) {
             ListNode listNode = transformToList(testData[i]);
             ListNode result = deleteDuplication(listNode);
             ListNode wantedData = transformToList(wanted[i]);
