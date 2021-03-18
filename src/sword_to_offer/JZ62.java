@@ -18,7 +18,7 @@ public class JZ62 {
      * @return
      */
     TreeNode KthNode(TreeNode pRoot, int k) {
-
+        return null;
     }
 
     TreeNode testRoot;
