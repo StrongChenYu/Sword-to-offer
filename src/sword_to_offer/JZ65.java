@@ -46,6 +46,16 @@ public class JZ65 {
             {0, 1},
             {0, -1}
     };
+
+    /**
+     * 注意回溯
+     * @param rowId
+     * @param colId
+     * @param str
+     * @param start
+     * @param end
+     * @return
+     */
     public boolean dfs(int rowId, int colId, String str, int start, int end) {
         //字符串是空的说明不管神马情况，都是true
         if (start >= end) return true;
