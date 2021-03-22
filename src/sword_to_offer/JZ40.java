@@ -2,6 +2,7 @@ package sword_to_offer;
 
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -22,6 +23,26 @@ public class JZ40 {
             if ((xor & a) == 0) num1[0] ^= a;
             else num2[0] ^= a;
         }
+    }
+
+    public int[] FindNumsAppearOnce (int[] array) {
+        // write code here
+        int xor = 0;
+        for (int a : array) xor = xor ^ a;
+
+        xor = xor & (-xor);
+
+
+        int res1 = 0;
+        int res2 = 0;
+        for (int a : array) {
+            if ((xor & a) == 0) res1 ^= a;
+            else res2 ^= a;
+        }
+
+        int[] res = new int[]{res1, res2};
+        Arrays.sort(res);
+        return res;
     }
 
 

@@ -4,7 +4,9 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class JZ50 {
 
@@ -37,6 +39,19 @@ public class JZ50 {
         return false;
     }
 
+    public int duplicate (int[] numbers) {
+        // write code here
+        Set<Integer> mem = new HashSet<>();
+        for (int nums : numbers) {
+            int previousSize = mem.size();
+            mem.add(nums);
+            if (mem.size() == previousSize) {
+                return nums;
+            }
+        }
+        return -1;
+    }
+    
 
     /**
      * in-place算法
