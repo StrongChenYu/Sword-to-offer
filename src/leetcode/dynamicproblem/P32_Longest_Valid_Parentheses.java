@@ -3,6 +3,8 @@ package leetcode.dynamicproblem;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.Stack;
+
 /**
  * @Author Chen Yu
  * @Date 2021/3/24 8:22
@@ -100,7 +102,7 @@ public class P32_Longest_Valid_Parentheses {
 //
 //        }
 
-    public int longestValidParentheses(String s) {
+    public int longestValidParentheses_DP(String s) {
 
         int n = s.length();
         int[] dp = new int[n];
@@ -124,11 +126,35 @@ public class P32_Longest_Valid_Parentheses {
 
     @Test
     public void Test() {
-        //Assert.assertEquals(longestValidParentheses("()()"), 4);
-        //Assert.assertEquals(longestValidParentheses("(()"), 2);
-        //Assert.assertEquals(longestValidParentheses(""), 0);
-        //Assert.assertEquals(longestValidParentheses("()()()()(((((()"), 8);
-        //Assert.assertEquals(longestValidParentheses("()()()()((((((())))))"), 12);
+//        Assert.assertEquals(longestValidParentheses("()()"), 4);
+//        Assert.assertEquals(longestValidParentheses("(()"), 2);
+//        Assert.assertEquals(longestValidParentheses(""), 0);
+        Assert.assertEquals(longestValidParentheses("()()()()(((((()"), 8);
+//        Assert.assertEquals(longestValidParentheses("()()()()((((((())))))"), 12);
         Assert.assertEquals(longestValidParentheses(")(((((()())()()))()(()))("), 22);
+    }
+
+    public int longestValidParentheses(String s) {
+        if (s == null || s.length() <= 1) return 0;
+
+        Stack<Integer> stack = new Stack<>();
+        stack.push(-1);
+        int max = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == '(') {
+                stack.push(i);
+            } else {
+                //如果当前值是右括号')'
+                stack.pop();
+
+                if (stack.isEmpty()) {
+                    stack.push(i);
+                } else {
+                    max = Math.max(i - stack.peek(), max);
+                }
+            }
+        }
+
+        return max;
     }
 }
