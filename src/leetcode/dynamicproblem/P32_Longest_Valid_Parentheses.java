@@ -126,11 +126,11 @@ public class P32_Longest_Valid_Parentheses {
 
     @Test
     public void Test() {
-//        Assert.assertEquals(longestValidParentheses("()()"), 4);
-//        Assert.assertEquals(longestValidParentheses("(()"), 2);
-//        Assert.assertEquals(longestValidParentheses(""), 0);
+        Assert.assertEquals(longestValidParentheses("()()"), 4);
+        Assert.assertEquals(longestValidParentheses("(()"), 2);
+        Assert.assertEquals(longestValidParentheses(""), 0);
         Assert.assertEquals(longestValidParentheses("()()()()(((((()"), 8);
-//        Assert.assertEquals(longestValidParentheses("()()()()((((((())))))"), 12);
+        Assert.assertEquals(longestValidParentheses("()()()()((((((())))))"), 12);
         Assert.assertEquals(longestValidParentheses(")(((((()())()()))()(()))("), 22);
     }
 
