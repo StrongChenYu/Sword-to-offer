@@ -3,11 +3,41 @@ package leetcode.dynamicproblem;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.Stack;
+
 /**
  * @Author Chen Yu
  * @Date 2021/3/25 20:56
  */
 public class P42_Trapping_Rain_Water {
+
+
+    /**
+     * 使用单调递减栈来解决
+     * @param height
+     * @return
+     */
+    public int trap_Descending_Stack(int[] height) {
+        int res = 0;
+
+        Stack<Integer> stack = new Stack<>();
+
+        for (int i = 0; i < height.length; i++) {
+            if (stack.isEmpty() || height[stack.peek()] >= height[i]) {
+                stack.push(i);
+            } else {
+                while (!stack.isEmpty() && height[stack.peek()] < height[i]) {
+                    int middle = stack.pop();
+
+                    int left = stack.peek();
+                    int right = i;
+                    res += (Math.min(height[left],height[right]) - height[middle]) * (right - left - 1);
+                }
+            }
+        }
+
+        return res;
+    }
 
     /**
      * 双指针算法
@@ -41,7 +71,7 @@ public class P42_Trapping_Rain_Water {
     }
 
     /**
-     * 其实就是先遍历一下存起来。。。。
+     * 其实就是先遍历一下存起来。。。。也勉强算是动态规划吧
      * @param height
      * @return
      */
@@ -88,7 +118,7 @@ public class P42_Trapping_Rain_Water {
 
     @Test
     public void Test() {
-        Assert.assertEquals(trap_Two_Point(new int[]{0,1,0,2,1,0,1,3,2,1,2,1}), 6);
-        Assert.assertEquals(trap_Two_Point(new int[]{4,2,7,2,5}), 5);
+        //Assert.assertEquals(trap_Descending_Stack(new int[]{0,1,0,2,1,0,1,3,2,1,2,1}), 6);
+        Assert.assertEquals(trap_Descending_Stack(new int[]{4,2,7,2,5}), 5);
     }
 }
