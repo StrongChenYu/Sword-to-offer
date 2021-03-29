@@ -51,6 +51,9 @@ public class P91_Decode_Ways {
         Assert.assertEquals(numDecodings("06"), 0);
         Assert.assertEquals(numDecodings("606"), 0);
 
+        /**
+         * 拿一个绝对正确的方法验证
+         */
         for (int i = 0; i < Integer.MAX_VALUE; i++) {
             String sInput = i + "";
             System.out.println(sInput);
@@ -62,31 +65,32 @@ public class P91_Decode_Ways {
         if (s.length() == 0 || s.charAt(0) == '0') return 0;
         if (s.length() == 1) return 1;
 
-        int[] dp = new int[s.length()];
+        int a1 = 1;
+        int a2 = 1;
+        int a3 = 0;
+        /**
+         * 表示长度为i的字符串的划分方案个数
+         */
+        for (int i = 2; i <= s.length(); i++) {
+            a3 = 0;
+            /**
+             * 要判断是不是0
+             */
+            if (s.charAt(i - 1) != '0') a3 += a2;
 
-        dp[0] = 1;
-        int firstTwo = Integer.parseInt(s.substring(0, 2));
-        if (26 >= firstTwo && firstTwo > 10) {
-            dp[1] = 2;
-        } else if (firstTwo == 10) {
-            dp[1] = 1;
-        } else {
-            dp[1] = 0;
-        }
-
-        for (int i = 2; i < s.length(); i++) {
-            dp[i] = dp[i - 1];
             /**
              * 判断s[i - 2] - s[i]字符串是否为合法的
              */
-
-            int beforeTwo = Integer.parseInt(s.substring(i - 2, i));
-
+            int beforeTwo = Integer.parseInt(s.substring(i - 2,i));
             if (beforeTwo <= 26 && beforeTwo >= 10) {
-                dp[i] += dp[i - 2];
+                a3 += a1;
             }
+
+            a1 = a2;
+            a2 = a3;
         }
-        return dp[s.length() - 1];
+
+        return a3;
     }
 
     public static void main(String[] args) {
