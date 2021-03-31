@@ -19,21 +19,38 @@ public class P42_Trapping_Rain_Water {
      */
     public int trap_Descending_Stack(int[] height) {
         int res = 0;
-
         Stack<Integer> stack = new Stack<>();
 
-        for (int i = 0; i < height.length; i++) {
-            if (stack.isEmpty() || height[stack.peek()] >= height[i]) {
-                stack.push(i);
-            } else {
-                while (!stack.isEmpty() && height[stack.peek()] < height[i]) {
-                    int middle = stack.pop();
+        int curIdx = 0;
+        while (curIdx < height.length) {
+            /**
+             * 大于往出取
+             * 直到计算出结果来
+             */
+            while (!stack.isEmpty() && height[stack.peek()] < height[curIdx]) {
+                int minIdx = stack.pop();
+                int minHeight = height[minIdx];
 
-                    int left = stack.peek();
-                    int right = i;
-                    res += (Math.min(height[left],height[right]) - height[middle]) * (right - left - 1);
-                }
+                /**
+                 * 因为还需要再看一个位置
+                 * 如果这个时候栈空了，说明是第一个
+                 * 直接跳出
+                 */
+                if (stack.isEmpty()) break;
+
+                int leftIdx = stack.peek();
+                int leftHeight = height[leftIdx];
+
+                /**
+                 * 因为leftIndex和minIdx并不一直是挨着的
+                 */
+                res += (Math.min(height[curIdx], leftHeight) - minHeight) * (curIdx - leftIdx - 1);
             }
+
+            /**
+             * 小于往进放
+             */
+            stack.push(curIdx++);
         }
 
         return res;
@@ -118,7 +135,30 @@ public class P42_Trapping_Rain_Water {
 
     @Test
     public void Test() {
-        //Assert.assertEquals(trap_Descending_Stack(new int[]{0,1,0,2,1,0,1,3,2,1,2,1}), 6);
-        Assert.assertEquals(trap_Descending_Stack(new int[]{4,2,7,2,5}), 5);
+        Assert.assertEquals(trap_Descending_Stack(new int[]{0,1,0,2,1,0,1,3,2,1,2,1}), 6);
+        Assert.assertEquals(trap_Descending_Stack(new int[]{3,2,1,1,3,4}), 5);
     }
+
+    public int trap6(int[] height) {
+        int sum = 0;
+        Stack<Integer> stack = new Stack<>();
+        int current = 0;
+        while (current < height.length) {
+            //如果栈不空并且当前指向的高度大于栈顶高度就一直循环
+            while (!stack.empty() && height[current] > height[stack.peek()]) {
+                int h = height[stack.peek()]; //取出要出栈的元素
+                stack.pop(); //出栈
+                if (stack.empty()) { // 栈空就出去
+                    break;
+                }
+                int distance = current - stack.peek() - 1; //两堵墙之前的距离。
+                int min = Math.min(height[stack.peek()], height[current]);
+                sum = sum + distance * (min - h);
+            }
+            stack.push(current); //当前指向的墙入栈
+            current++; //指针后移
+        }
+        return sum;
+    }
+
 }
