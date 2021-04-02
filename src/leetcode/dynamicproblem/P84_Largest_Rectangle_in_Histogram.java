@@ -11,51 +11,35 @@ import java.util.Stack;
  */
 public class P84_Largest_Rectangle_in_Histogram {
 
-    public int largestRectangleArea(int[] heights) {
-        int n = heights.length;
-        int[] left = new int[n];
-        int[] right = new int[n];
+    public int largestRectangleArea_bad(int[] heights) {
+        int res = 0;
 
-        Stack<Integer> mono_stack = new Stack<Integer>();
-        for (int i = 0; i < n; ++i) {
-            while (!mono_stack.isEmpty() && heights[mono_stack.peek()] >= heights[i]) {
-                mono_stack.pop();
+        for (int i = 0; i < heights.length; i++) {
+            int min = Integer.MAX_VALUE;
+            for (int j = i; j < heights.length; j++) {
+                min = Math.min(min, heights[j]);
+                res = Math.max(res, min * (j - i + 1));
             }
-            left[i] = (mono_stack.isEmpty() ? -1 : mono_stack.peek());
-            mono_stack.push(i);
         }
 
-        mono_stack.clear();
-        for (int i = n - 1; i >= 0; --i) {
-            while (!mono_stack.isEmpty() && heights[mono_stack.peek()] >= heights[i]) {
-                mono_stack.pop();
-            }
-            right[i] = (mono_stack.isEmpty() ? n : mono_stack.peek());
-            mono_stack.push(i);
-        }
-
-        int ans = 0;
-        for (int i = 0; i < n; ++i) {
-            ans = Math.max(ans, (right[i] - left[i] - 1) * heights[i]);
-        }
-        return ans;
+        return res;
     }
 
 
     int[][] heights = {
-            {2,1,5,6,2,3},
-            {2,4},
-            {5},
-            {1,2},
-            {}
+            {2,3,4,1,5},
+//            {2,4},
+//            {5},
+//            {1,2},
+//            {}
     };
 
     int[] want = {
             10,
-            4,
-            5,
-            2,
-            0
+//            4,
+//            5,
+//            2,
+//            0
     };
 
     @Test
@@ -66,4 +50,9 @@ public class P84_Largest_Rectangle_in_Histogram {
             System.out.println("test:" + i + " pass!");
         }
     }
+
+    public int largestRectangleArea(int[] heights) {
+        return 0;
+    }
+
 }
