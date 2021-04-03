@@ -3,6 +3,7 @@ package leetcode.dynamicproblem;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.Stack;
 
 /**
@@ -28,18 +29,18 @@ public class P84_Largest_Rectangle_in_Histogram {
 
     int[][] heights = {
             {2,3,4,1,5},
-//            {2,4},
-//            {5},
-//            {1,2},
-//            {}
+            {2,4},
+            {5},
+            {1,2},
+            {}
     };
 
     int[] want = {
-            10,
-//            4,
-//            5,
-//            2,
-//            0
+            6,
+            4,
+            5,
+            2,
+            0
     };
 
     @Test
@@ -52,7 +53,27 @@ public class P84_Largest_Rectangle_in_Histogram {
     }
 
     public int largestRectangleArea(int[] heights) {
-        return 0;
+
+        int n = heights.length;
+
+        Stack<Integer> stack = new Stack<>();
+        int[] left = new int[n];
+        int[] right = new int[n];
+        Arrays.fill(right, n);
+
+        for (int i = 0; i < n; i++) {
+            while (!stack.isEmpty() && heights[stack.peek()] >= heights[i]) {
+                right[stack.pop()] = i;
+            }
+            left[i] = stack.isEmpty() ? -1 : stack.peek();
+            stack.push(i);
+        }
+
+        int res = 0;
+        for (int i = 0; i < n; i++) {
+            res = Math.max(res, (right[i] - left[i] - 1) * heights[i]);
+        }
+        return res;
     }
 
 }
