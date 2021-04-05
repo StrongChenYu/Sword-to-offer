@@ -13,8 +13,66 @@ import java.util.Set;
  */
 public class P87_Scramble_String {
 
-    HashMap<String, Boolean> resMap = new HashMap<>();
+    /**
+     * dp 解法
+     * @param s1
+     * @param s2
+     * @return
+     */
     public boolean isScramble(String s1, String s2) {
+
+        char[] chs1 = s1.toCharArray();
+        char[] chs2 = s2.toCharArray();
+        int n1 = s1.length();
+        int n2 = s2.length();
+
+        if (n1 != n2) return false;
+        if (n1 == 0) return true;
+
+        boolean[][][] dp = new boolean[n1][n2][n1 + 1];
+
+        // 初始化单个字符的情况
+        for (int i = 0; i < n1; i++) {
+            for (int j = 0; j < n1; j++) {
+                dp[i][j][1] = chs1[i] == chs2[j];
+            }
+        }
+
+
+        for (int len = 2; len <= n1; len++) {
+            for (int i = 0; i <= n1 - len; i++) {
+                for (int j = 0; j <= n2 - len; j++) {
+//                    if (len == 0) {
+//                        dp[i][j][len] = true;
+//                    } else if (len == 1) {
+//                        if(s1.charAt(i) == s2.charAt(j)){
+//                            dp[i][j][len] = true;
+//                        }
+//                    } else {
+                    for (int k = 1; k <= len - 1; k++) {
+//                            dp[i][j][len] |= (dp[i][j][k] && dp[i + k][j + k][len - k]);
+//                            dp[i][j][len] |= (dp[i][j + len - k][k] && dp[i + k][j][len - k]);
+                        if (dp[i][j][k] && dp[i + k][j + k][len - k]) {
+                            dp[i][j][len] = true;
+                            break;
+                        }
+                        // 第二种情况：S1 -> T2, S2 -> T1
+                        // S1 起点 i，T2 起点 j + 前面那段长度 len-k ，S2 起点 i + 前面长度k
+                        if (dp[i][j + len - k][k] && dp[i + k][j][len - k]) {
+                            dp[i][j][len] = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        return dp[0][0][n1];
+    }
+
+
+    HashMap<String, Boolean> resMap = new HashMap<>();
+    public boolean isScramble_Recursion(String s1, String s2) {
         if (resMap.containsKey(s1 + "_" + s2)) return resMap.get(s1 + "_" + s2);
 
         int sl1 = s1.length();
@@ -58,8 +116,15 @@ public class P87_Scramble_String {
     @Test
     public void Test() {
         Assert.assertTrue(isScramble("great", "rgeat"));
-        Assert.assertTrue(isScramble("", ""));
+//        Assert.assertTrue(isScramble("", ""));
+        Assert.assertTrue(isScramble("great", "great"));
 
+
+        Assert.assertFalse(isScramble("eebaacbcbcadaaedceaaacadccd","eadcaacabaddaceacbceaabeccd"));
         Assert.assertFalse(isScramble("abcde", "caebd"));
+    }
+
+    public static void main(String[] args) {
+        System.out.println("123".substring(0,3));
     }
 }
