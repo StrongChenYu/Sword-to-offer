@@ -47,6 +47,16 @@ public class P123_Best_Time_to_Buy_and_Sell_Stock_III {
 
     public int maxProfit(int[] prices) {
         if (prices == null || prices.length == 0) return 0;
-        return 0;
+
+        int buy1Max = -prices[0], sell1Max = 0;
+        int buy2Max = -prices[0], sell2Max = 0;
+        for (int i = 0; i < prices.length; i++) {
+            buy1Max = Math.max(buy1Max, -prices[i]);
+            sell1Max = Math.max(sell1Max, prices[i] + buy1Max);
+            buy2Max = Math.max(buy2Max, -prices[i] + sell1Max);
+            sell2Max = Math.max(sell2Max, prices[i] + buy2Max);
+        }
+
+        return sell2Max;
     }
 }
