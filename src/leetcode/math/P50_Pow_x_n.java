@@ -1,4 +1,4 @@
-package leetcode.mathpro;
+package leetcode.math;
 
 import org.junit.Assert;
 import org.junit.Test;

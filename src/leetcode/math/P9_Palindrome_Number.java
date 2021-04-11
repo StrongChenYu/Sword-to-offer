@@ -1,4 +1,4 @@
-package leetcode.mathpro;
+package leetcode.math;
 
 public class P9_Palindrome_Number {
 
