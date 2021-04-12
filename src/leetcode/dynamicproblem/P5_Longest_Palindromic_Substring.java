@@ -23,6 +23,7 @@ public class P5_Longest_Palindromic_Substring {
 
             for (int i = 0; i + len <= n; i++) {
                 int j = i + len - 1;
+                System.out.println("i = " + i + " j = " + j);
                 if (len == 1) {
                     dp[i][j] = true;
                 } else if (len == 2) {
@@ -43,11 +44,11 @@ public class P5_Longest_Palindromic_Substring {
 
     @Test
     public void Test() {
-        Assert.assertEquals(longestPalindrome("a"), "a");
-        Assert.assertEquals(longestPalindrome("abc"), "a");
-        Assert.assertEquals(longestPalindrome("aba"), "aba");
-        Assert.assertEquals(longestPalindrome("abcbcb"), "bcbcb");
-        Assert.assertEquals(longestPalindrome(""), "");
-        Assert.assertEquals(longestPalindrome("abcbabbbba"), "abbbba");
+//        Assert.assertEquals(longestPalindrome("a"), "a");
+//        Assert.assertEquals(longestPalindrome("abc"), "a");
+//        Assert.assertEquals(longestPalindrome("aba"), "aba");
+          Assert.assertEquals(longestPalindrome("abcbcb"), "bcbcb");
+//        Assert.assertEquals(longestPalindrome(""), "");
+ //       Assert.assertEquals(longestPalindrome("abcbabbbba"), "abbbba");
     }
 }
