@@ -29,7 +29,7 @@ public class P152_Maximum_Product_Subarray {
         int[] dpMax = new int[n];
         int[] dpMin = new int[n];
 
-        int res = Integer.MIN_VALUE;
+        int res = nums[0];
         dpMax[0] = nums[0];
         dpMin[0] = nums[0];
         for (int i = 1; i < n; i++) {
