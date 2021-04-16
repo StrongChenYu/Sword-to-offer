@@ -55,6 +55,8 @@ public class P123_Best_Time_to_Buy_and_Sell_Stock_III {
             sell1Max = Math.max(sell1Max, prices[i] + buy1Max);
             buy2Max = Math.max(buy2Max, -prices[i] + sell1Max);
             sell2Max = Math.max(sell2Max, prices[i] + buy2Max);
+            //buy3Max = Math.max(buy3Max, -prices[i] + sell2Max);
+            //sell3Max = Math.max(sell3Max, prices[i] + buy3Max);
         }
 
         return sell2Max;
