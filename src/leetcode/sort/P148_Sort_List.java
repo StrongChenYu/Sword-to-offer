@@ -14,6 +14,50 @@ import java.util.PriorityQueue;
 public class P148_Sort_List {
 
     /**
+     * 链表快速排序
+     */
+    public ListNode quickSort(ListNode head) {
+        return quickSortHelper(head, null);
+    }
+
+    public ListNode quickSortHelper(ListNode head, ListNode end) {
+        if (head == end || head.next == end) {
+            return head;
+        }
+
+        /**
+         * 分割
+         */
+        ListNode lh = head;
+        ListNode rh = head;
+
+        ListNode start = head.next;
+        while (start != end) {
+            ListNode next = start.next;
+            if (start.val < head.val) {
+                //左链表头插
+                start.next = lh;
+                lh = start;
+
+            } else {
+                //右链表尾插
+                rh.next = start;
+                rh = start;
+            }
+            start = next;
+        }
+
+        rh.next = end;
+
+        ListNode sortL = quickSortHelper(lh, head);
+        head.next = quickSortHelper(head.next, end);
+
+        return sortL;
+    }
+
+
+
+    /**
      * 归并排序
      * @param head
      * @return
@@ -70,15 +114,18 @@ public class P148_Sort_List {
 
     @Before
     public void before() {
-        data = new ListNode(5);
-        data.next = new ListNode(5);
-        data.next.next = new ListNode(2);
+        data = new ListNode(4);
+        data.next = new ListNode(2);
+        data.next.next = new ListNode(1);
+        data.next.next.next = new ListNode(3);
+        data.next.next.next.next = new ListNode(4);
+        data.next.next.next.next.next = new ListNode(5);
         //data.next.next.next = new ListNode(5);
     }
 
     @Test
     public void Test() {
-        ListNode listNode = sortList(data);
+        ListNode listNode = quickSort(data);
         System.out.println("chen");
     }
 }
