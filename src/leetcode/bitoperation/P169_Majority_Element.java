@@ -26,6 +26,6 @@ public class P169_Majority_Element {
 
     @Test
     public void Test() {
-        majorityElement(new int[]{[3,2,3,3,3,3,3,3,3,3,1,1,2,3,4]});
+        majorityElement(new int[]{3,2,3,3,3,3,3,3,3,3,1,1,2,3,4});
     }
 }
