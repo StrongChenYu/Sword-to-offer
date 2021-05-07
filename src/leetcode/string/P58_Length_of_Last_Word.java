@@ -36,6 +36,7 @@ public class P58_Length_of_Last_Word {
         Assert.assertEquals(lengthOfLastWord(" "), 0);
         Assert.assertEquals(lengthOfLastWord("abc"),3);
         Assert.assertEquals(lengthOfLastWord("abc abc"), 3);
+
         Assert.assertEquals(lengthOfLastWord("a "), 1);
     }
 
