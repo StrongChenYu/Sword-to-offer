@@ -9,6 +9,8 @@ public class HeapSort implements Sort{
         for (int i = 1; i < arr.length; i++) {
             heapInsert(arr, i);
         }
+        
+        
 
         int heapSize = arr.length;
         int cur = 0;
