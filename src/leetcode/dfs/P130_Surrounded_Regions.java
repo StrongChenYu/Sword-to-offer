@@ -7,6 +7,7 @@ public class P130_Surrounded_Regions {
 
     int rows;
     int cols;
+    boolean[][] visited;
     public void solve(char[][] board) {
         if (board == null || board.length == 0 || board[0].length == 0) {
             return;
@@ -14,17 +15,25 @@ public class P130_Surrounded_Regions {
 
         rows = board.length;
         cols = board[0].length;
-
+        visited = new boolean[rows][cols];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
 
-                if (board[i][j] == 'O') {
-                    boolean[][] visited = new boolean[rows][cols];
+                if (isBoundary(i, j) && board[i][j] == 'O') {
                     visited[i][j] = true;
-                    dfs(board, i, j, visited);
+                    dfs(board, i, j);
                 }
             }
         }
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (!visited[i][j] && board[i][j] == 'O') {
+                    board[i][j] = 'X';
+                }
+            }
+        }
+
     }
 
 
@@ -35,29 +44,18 @@ public class P130_Surrounded_Regions {
             {-1,0},
     };
 
-    public boolean dfs(char[][] board, int i, int j, boolean[][] visited) {
+    public void dfs(char[][] board, int i, int j) {
+        if (board[i][j] == 'X') return;
 
-        if (board[i][j] == 'X') return true;
+        visited[i][j] = true;
 
-        if (board[i][j] == 'O' && isBoundary(i, j)) {
-            return false;
-        }
-
-        boolean dfsRes = true;
         for (int k = 0; k < axis.length; k++) {
             int row = i + axis[k][0];
             int col = j + axis[k][1];
             if (row >= 0 && row < rows && col >= 0 && col < cols && !visited[row][col]) {
-                visited[row][col] = true;
-                dfsRes &= dfs(board, row, col, visited);
+                dfs(board, row, col);
             }
         }
-
-        if (dfsRes) {
-            board[i][j] = 'X';
-        }
-
-        return dfsRes;
     }
 
     private boolean isBoundary(int i, int j) {
@@ -70,19 +68,19 @@ public class P130_Surrounded_Regions {
 //            {}
 //    }
 
-//    char[][] data = new char[][] {
-//            {'O','O','O','O','X','X'},
-//            {'O','O','O','O','O','O'},
-//            {'O','X','O','X','O','O'},
-//            {'O','X','O','O','X','O'},
-//            {'O','X','O','X','O','O'},
-//            {'O','X','O','O','O','O'}
-//    };
+    char[][] data = new char[][] {
+            {'O','O','O','O','X','X'},
+            {'O','O','O','O','O','O'},
+            {'O','X','O','X','O','O'},
+            {'O','X','O','O','X','O'},
+            {'O','X','O','X','O','O'},
+            {'O','X','O','O','O','O'}
+    };
 
 
 
     @Test
     public void Test() {
-//        solve(data);
+        solve(data);
     }
 }
