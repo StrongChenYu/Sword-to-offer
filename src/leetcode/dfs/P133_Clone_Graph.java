@@ -9,7 +9,7 @@ import java.util.*;
 public class P133_Clone_Graph {
 
     Map<Integer, Node> map = new HashMap<>();
-    public Node cloneGraph(Node node) {
+    public Node cloneGraphDFS(Node node) {
         if (node == null) {
             return null;
         }
@@ -22,9 +22,48 @@ public class P133_Clone_Graph {
         map.put(newNode.val, newNode);
 
         for (Node neighbor : node.neighbors) {
-            newNode.neighbors.add(cloneGraph(neighbor));
+            newNode.neighbors.add(cloneGraphDFS(neighbor));
         }
         return newNode;
+    }
+
+
+    public Node cloneGraphBFS(Node node) {
+        if (node == null) {
+            return null;
+        }
+
+        Map<Integer, Node> map = new HashMap<>();
+        Queue<Node> nodeQueue = new LinkedList<>();
+        nodeQueue.offer(node);
+
+        while (!nodeQueue.isEmpty()) {
+            /**
+             * 队列不为空取节点
+             */
+            Node node1 = nodeQueue.poll();
+
+            Node newNode = new Node(node1.val, new ArrayList<>());
+            map.put(node1.val, newNode);
+
+            /**
+             * 找邻居
+             */
+            for (Node neigh : node1.neighbors) {
+                //bfs队列添加
+                nodeQueue.offer(neigh);
+
+                //找邻居节点，如果在map里面，就不用复制了
+                Node copyNeigh = map.get(neigh.val);
+                if (copyNeigh == null) {
+                    copyNeigh = new Node(neigh.val, new ArrayList<>());
+                    map.put(neigh.val, copyNeigh);
+                    newNode.neighbors.add(copyNeigh);
+                }
+            }
+        }
+
+        return map.get(node.val);
     }
 
     Node data;
@@ -61,7 +100,7 @@ public class P133_Clone_Graph {
 
     @Test
     public void Test() {
-        cloneGraph(data);
+        cloneGraphBFS(data);
     }
 
 }
