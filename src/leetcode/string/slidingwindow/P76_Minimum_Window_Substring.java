@@ -1,5 +1,6 @@
 package leetcode.string.slidingwindow;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -65,7 +66,11 @@ public class P76_Minimum_Window_Substring {
 
     @Test
     public void test() {
-        System.out.println(minWindow("ADOBECODEBANC", "ABC"));
+        Assert.assertEquals("BANC" ,minWindow("ADOBECODEBANC", "ABC"));
+        Assert.assertEquals("ABC" ,minWindow("ABC", "ABC"));
+        Assert.assertEquals("" ,minWindow("", "ABC"));
+        Assert.assertEquals("" ,minWindow("ADOBECODEBANC", ""));
+        Assert.assertEquals("ABBC" ,minWindow("ABBCNNNNNNBBA", "ABBC"));
     }
 
     private boolean checkMoveLeft(Map<Character, Integer> need) {
