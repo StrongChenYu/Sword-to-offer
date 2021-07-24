@@ -3,9 +3,7 @@ package leetcode.string.slidingwindow;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 public class P76_Minimum_Window_Substring {
 
@@ -15,62 +13,61 @@ public class P76_Minimum_Window_Substring {
             return "";
         }
 
-        Map<Character, Integer> need = new HashMap<>();
         Map<Character, Integer> window = new HashMap<>();
-        for (int i = 0; i < t.length(); i++) {
-            Character cur = t.charAt(i);
-            need.put(cur, need.getOrDefault(cur, 0) + 1);
+        Map<Character, Integer> need = new HashMap<>();
+        for (char c : t.toCharArray()) {
+            need.put(c, need.getOrDefault(c, 0) + 1);
         }
 
-        int start = 0;
         int minLength = Integer.MAX_VALUE;
-
         int leftIdx = 0;
-        int rightIdx = 0;
         int match = 0;
 
-        for (; rightIdx < s.length(); rightIdx++) {
-            Character cur = s.charAt(rightIdx);
-            if (!need.containsKey(cur)) {
-                continue;
-            }
+        int left = 0;
+        int right = -1;
+        while (right < s.length() - 1) {
+            char c = s.charAt(++right);
+            window.put(c, window.getOrDefault(c, 0) + 1);
 
-            window.put(cur, window.getOrDefault(cur, 0) + 1);
-            //match当多余的时候也可以正确表示
-            if (window.get(cur).compareTo(need.get(cur)) == 0) {
-                match++;
-            }
+            if (need.containsKey(c)) {
 
-            while (match == need.size()) {
-                int curLength = rightIdx - leftIdx + 1;
-                if (curLength < minLength) {
-                    minLength = curLength;
-                    start = leftIdx;
+                //部分等于
+                if (need.get(c).equals(window.get(c))) {
+                    match++;
                 }
 
-                char c = s.charAt(leftIdx);
-                if (need.containsKey(c)) {
-                    window.put(c, window.get(c) - 1);
+                //完全等于
+                while (match == need.size()) {
+                    int curLength = right - left + 1;
+                    if (curLength < minLength) {
+                        minLength = curLength;
+                        leftIdx = left;
+                    }
 
-                    if (window.get(c) < need.get(c)) {
+                    //滑动left让条件不成立
+                    char leftChar = s.charAt(left);
+                    window.put(leftChar, window.get(leftChar) - 1);
+                    if (need.containsKey(leftChar) && window.get(leftChar) < need.get(leftChar)) {
                         match--;
                     }
+                    left++;
                 }
 
-                leftIdx++;
             }
         }
 
-        return minLength != Integer.MAX_VALUE ? s.substring(start, start + minLength) : "";
+        return minLength == Integer.MAX_VALUE ? "" : s.substring(leftIdx, leftIdx + minLength);
     }
 
     @Test
     public void test() {
-        Assert.assertEquals("BANC" ,minWindow("ADOBECODEBANC", "ABC"));
+        //Assert.assertEquals("BANC" ,minWindow("ABECODEBANC", "ABBC"));
         Assert.assertEquals("ABC" ,minWindow("ABC", "ABC"));
         Assert.assertEquals("" ,minWindow("", "ABC"));
         Assert.assertEquals("" ,minWindow("ADOBECODEBANC", ""));
         Assert.assertEquals("ABBC" ,minWindow("ABBCNNNNNNBBA", "ABBC"));
+
+        Assert.assertEquals("baca", minWindow("acbbaca", "aba"));
     }
 
     private boolean checkMoveLeft(Map<Character, Integer> need) {
