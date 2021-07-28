@@ -16,45 +16,53 @@ public class P18_4Sum {
         }
 
         Arrays.sort(nums);
-        for (int i = 0; i < nums.length - 2;i ++) {
-            if (nums[i] == nums[i + 1]) continue;
+        for (int i = 0; i <= nums.length - 4; i++) {
+            int num = nums[i];
+            if (i > 0 && nums[i] == nums[i - 1]) {
+                continue;
+            }
 
-            List<List<Integer>> tempSums = threeSum(nums, i + 1, target - nums[i]);
-
-            for (List<Integer> tempSum : tempSums) {
-                tempSum.add(nums[i]);
-                res.add(tempSum);
+            List<List<Integer>> threeSums = threeSum(nums, i + 1, target - num);
+            for (List<Integer> threeSum : threeSums) {
+                threeSum.add(num);
+                res.add(threeSum);
             }
         }
 
         return res;
     }
 
-    public List<List<Integer>> threeSum(int[] nums, int start, int target) {
+    public List<List<Integer>> threeSum(int[] nums, int startIdx, int target) {
         List<List<Integer>> res = new ArrayList<>();
 
-        for (int i = start; i < nums.length; i++) {
-            int left = i + 1;
-            int right = nums.length - 1;
+        Arrays.sort(nums);
+        int n = nums.length;
+        for (int i = startIdx; i < n; i++) {
 
-            while (left < right) {
-                int sum = nums[left] + nums[right] + nums[i];
+            if (i > startIdx && nums[i] == nums[i - 1]) {
+                continue;
+            }
 
-                if (sum > target) {
-                    right--;
-                } else if (sum < target) {
-                    left++;
-                } else {
+            int L = i + 1;
+            int R = n - 1;
+
+            while (L < R) {
+                int sum = nums[i] + nums[L] + nums[R];
+                if (sum == target) {
                     List<Integer> tempRes = new ArrayList<>();
                     tempRes.add(nums[i]);
-                    tempRes.add(nums[left]);
-                    tempRes.add(nums[right]);
-
+                    tempRes.add(nums[L]);
+                    tempRes.add(nums[R]);
                     res.add(tempRes);
-                    while (left < right && nums[left] == nums[left + 1]) left++;
-                    while (left < right && nums[right] == nums[right - 1]) right--;
-                    left++;
-                    right--;
+
+                    while (L<R && nums[L] == nums[L+1]) L++;
+                    while (L<R && nums[R] == nums[R-1]) R--;
+                    L++;
+                    R--;
+                } else if (sum < target) {
+                    L++;
+                } else {
+                    R--;
                 }
             }
         }
@@ -62,9 +70,8 @@ public class P18_4Sum {
         return res;
     }
 
-
     @Test
     public void Test() {
-        fourSum(new int[]{2,2,2,2}, 8);
+        fourSum(new int[]{1,0,-1,0,-2,2}, 0);
     }
 }
