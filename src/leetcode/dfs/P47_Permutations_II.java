@@ -9,17 +9,17 @@ import java.util.Set;
 
 /**
  * @Author Chen Yu
- * @Date 2021/9/13 21:50
+ * @Date 2021/9/14 15:14
  */
-public class P46_Permutations {
+public class P47_Permutations_II {
 
     List<List<Integer>> res = new ArrayList<>();
-    boolean[] visited = null;
     List<Integer> path = new ArrayList<>();
+    boolean[] visited = null;
 
-    public List<List<Integer>> permute(int[] nums) {
+    public List<List<Integer>> permuteUnique(int[] nums) {
         if (nums == null || nums.length == 0) {
-            return new ArrayList<>();
+            return res;
         }
         visited = new boolean[nums.length];
 
@@ -28,26 +28,30 @@ public class P46_Permutations {
     }
 
     public void dfs(int[] nums, int deep) {
-
         if (deep == nums.length) {
             res.add(new ArrayList<>(path));
         }
 
+        Set<Integer> mem = new HashSet<>();
         for (int i = 0; i < nums.length; i++) {
-            if (visited[i]) {
-                continue;
-            }
-            path.add(nums[i]);
-            visited[i] = true;
-            dfs(nums, deep + 1);
+            if (!visited[i]) {
+                if (!mem.contains(nums[i])) {
+                    path.add(nums[i]);
+                    visited[i] = true;
 
-            path.remove(path.size() - 1);
-            visited[i] = false;
+                    dfs(nums, deep + 1);
+
+                    int lastIdx = path.size() - 1;
+                    visited[i] = false;
+                    path.remove(lastIdx);
+                }
+                mem.add(nums[i]);
+            }
         }
     }
 
     @Test
     public void Test() {
-        permute(new int[]{1,2,3});
+        permuteUnique(new int[]{1,1});
     }
 }
