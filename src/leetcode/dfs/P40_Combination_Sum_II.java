@@ -4,16 +4,17 @@ import org.junit.Test;
 
 import java.util.*;
 
-public class P39_Combination_Sum {
+public class P40_Combination_Sum_II {
 
     List<List<Integer>> res = new ArrayList<>();
     List<Integer> path = new ArrayList<>();
 
-    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
         if (candidates == null || candidates.length == 0) {
             return res;
         }
 
+        Arrays.sort(candidates);
         dfs(candidates, target, 0);
         return res;
     }
@@ -25,23 +26,23 @@ public class P39_Combination_Sum {
             return;
         }
 
-        for (int i = begin; i < candidates.length; i++) {
+        int i = begin;
+        for (; i < candidates.length; i++) {
 
             path.add(candidates[i]);
             int left = target - candidates[i];
 
             if (left >= 0) {
-                dfs(candidates, left, i);
+                dfs(candidates, left, i + 1);
             }
 
             path.remove(path.size() - 1);
+            while (i + 1 < candidates.length && candidates[i] == candidates[i + 1]) i++;
         }
     }
 
-
-
     @Test
     public void Test() {
-        combinationSum(new int[]{2,3,6,7}, 7);
+        combinationSum2(new int[]{1,1,2,2,2,2,3,4,4,5,5}, 8);
     }
 }
