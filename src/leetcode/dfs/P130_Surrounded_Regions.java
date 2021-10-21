@@ -4,11 +4,60 @@ import org.junit.Test;
 
 public class P130_Surrounded_Regions {
 
+    public void solve(char[][] board) {
+
+    }
+
+
+    private static class UnionFind {
+
+        int[] parents;
+        public UnionFind(int totalNodes) {
+            parents = new int[totalNodes];
+            for (int i = 0; i < totalNodes; i++) {
+                parents[i] = i;
+            }
+        }
+
+        public int find(int node) {
+            int root = parents[node];
+            while (root != parents[root]) {
+                parents[root] = parents[parents[root]];
+                root = parents[root];
+            }
+
+            return root;
+        }
+
+        public void union(int node1, int node2) {
+            int root1 = find(node1);
+            int root2 = find(node2);
+            if (root1 != root2) {
+                parents[root1] = root2;
+            }
+        }
+
+    }
+
+    public static void main(String[] args) {
+        int n = 7;
+        UnionFind unionFind = new UnionFind(7);
+        for (int i = 0; i < n; i++){
+            for (int j = i + 1; j < n; j++) {
+                unionFind.union(i, j);
+            }
+        }
+        for (int i = 0; i < n; i++) {
+            unionFind.find(i);
+        }
+
+        System.out.println("test end");
+    }
 
     int rows;
     int cols;
     boolean[][] visited;
-    public void solve(char[][] board) {
+    public void solveDFS(char[][] board) {
         if (board == null || board.length == 0 || board[0].length == 0) {
             return;
         }
