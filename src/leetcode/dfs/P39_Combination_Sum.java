@@ -42,6 +42,6 @@ public class P39_Combination_Sum {
 
     @Test
     public void Test() {
-        combinationSum(new int[]{2,3,6,7}, 7);
+        System.out.println(combinationSum(new int[]{2, 3, 6, 7}, 7));
     }
 }

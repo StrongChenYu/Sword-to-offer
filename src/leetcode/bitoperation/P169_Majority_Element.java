@@ -6,7 +6,7 @@ import org.junit.Test;
  * @Author Chen Yu
  * @Date 2021/4/30 19:37
  */
-public class P169_Majority_Element {
+public class  P169_Majority_Element {
 
     public int majorityElement(int[] nums) {
         if (nums == null || nums.length == 0) return -1;
