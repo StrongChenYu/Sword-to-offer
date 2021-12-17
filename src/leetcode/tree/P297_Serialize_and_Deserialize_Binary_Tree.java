@@ -11,46 +11,53 @@ import java.util.Queue;
 //剑指offer61题
 public class P297_Serialize_and_Deserialize_Binary_Tree {
 
+    // Encodes a tree to a single string.
     public String serialize(TreeNode root) {
-        StringBuilder res = new StringBuilder("");
-        preOrderTravel(root, res);
+        Queue<TreeNode> queue = new LinkedList<>();
+        StringBuilder res = new StringBuilder();
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            TreeNode node = queue.poll();
+            if (node == null) {
+                res.append("#");
+            } else {
+                res.append(node.val);
+            }
+            res.append("_");
+            if (node != null) {
+                queue.offer(node.left);
+                queue.offer(node.right);
+            }
+        }
         return res.toString();
     }
 
-    public void preOrderTravel(TreeNode root, StringBuilder res) {
-        if (root == null) {
-            res.append("#_");
-            return;
-        }
-        res.append(root.val + "_");
-        preOrderTravel(root.left, res);
-        preOrderTravel(root.right, res);
-    }
-
+    // Decodes your encoded data to tree.
     public TreeNode deserialize(String data) {
-        //1_2_4_#_#_5_#_#_3_6_#_#_7_#_#_
-        //会把下划线都去掉
-        String[] datas = data.split("_");
-        Queue<String> tempData = new LinkedList<>();
-        for (String s : datas) {
-            tempData.offer(s);
+        String[] nodeVals = data.split("_");
+        if (nodeVals.length == 1 && nodeVals[0].equals("#")) return null;
+
+        int curIdx = 1;
+        TreeNode root = new TreeNode(Integer.parseInt(nodeVals[0]));
+
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        while (!queue.isEmpty() && curIdx < nodeVals.length) {
+            TreeNode node = queue.poll();
+            if (!nodeVals[curIdx].equals("#")) {
+                node.left = new TreeNode(Integer.parseInt(nodeVals[curIdx]));
+                queue.offer(node.left);
+            }
+            curIdx++;
+
+            if (!nodeVals[curIdx].equals("#")) {
+                node.right = new TreeNode(Integer.parseInt(nodeVals[curIdx]));
+                queue.offer(node.right);
+            }
+            curIdx++;
         }
 
-        TreeNode root = deserializeHelp(tempData);
         return root;
-    }
-
-
-    public TreeNode deserializeHelp(Queue<String> data) {
-        String val = data.poll();
-        if (val.equals("#")) {
-            return null;
-        }
-        TreeNode node = new TreeNode(Integer.valueOf(val));
-        node.left = deserializeHelp(data);
-        node.right = deserializeHelp(data);
-
-        return node;
     }
 
     public static void main(String[] args) {
@@ -66,12 +73,9 @@ public class P297_Serialize_and_Deserialize_Binary_Tree {
 
         System.out.println(p.serialize(root));
 
-        String res = "1_2_4_#_#_5_#_#_3_6_#_#_7_#_#_";
-
-        p.deserialize(res);
-
-        Queue<TreeNode> nodes = new LinkedList<>();
-        nodes.offer(null);
+        String res = "1_";
+        TreeNode deserialize = p.deserialize(res);
+        System.out.println(deserialize);
     }
 
 }
