@@ -6,38 +6,36 @@ import java.util.*;
 
 public class P40_Combination_Sum_II {
 
-    List<List<Integer>> res = new ArrayList<>();
-    List<Integer> path = new ArrayList<>();
-
     public List<List<Integer>> combinationSum2(int[] candidates, int target) {
-        if (candidates == null || candidates.length == 0) {
-            return res;
-        }
-
         Arrays.sort(candidates);
-        dfs(candidates, target, 0);
+
+        List<List<Integer>> res = new ArrayList<>();
+        List<Integer> path = new ArrayList<>();
+        dfs(candidates, 0, target, res, path);
+
         return res;
     }
 
-    public void dfs(int[] candidates, int target, int begin) {
-
+    private void dfs(int[] candidates, int startIdx, int target, List<List<Integer>> res, List<Integer> path) {
         if (target == 0) {
             res.add(new ArrayList<>(path));
             return;
         }
 
-        int i = begin;
-        for (; i < candidates.length; i++) {
+        for (int i = startIdx; i < candidates.length; i++) {
 
-            path.add(candidates[i]);
-            int left = target - candidates[i];
-
-            if (left >= 0) {
-                dfs(candidates, left, i + 1);
+            if (i > startIdx && candidates[i - 1] == candidates[i]) {
+                continue;
             }
 
+            if (candidates[i] > target) {
+                return;
+            }
+
+
+            path.add(candidates[i]);
+            dfs(candidates, i + 1, target - candidates[i], res, path);
             path.remove(path.size() - 1);
-            while (i + 1 < candidates.length && candidates[i] == candidates[i + 1]) i++;
         }
     }
 
