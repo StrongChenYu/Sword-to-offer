@@ -1,11 +1,9 @@
 package leetcode.dfs;
 
-import org.junit.Test;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class P51_N_Queens {
+public class P52_N_Queens_II {
 
     public class Axis {
         public int x;
@@ -18,31 +16,20 @@ public class P51_N_Queens {
 
     }
 
-    public List<List<String>> solveNQueens(int n) {
-        List<List<String>> res = new ArrayList<>();
+    int res = 0;
+    public int totalNQueens(int n) {
+
         List<Axis> path = new ArrayList<>();
 
-        StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < n; i++) {
-            builder.append('.');
-        }
-
-        dfs(0, n, res, path, builder);
+        dfs(0, n, path);
 
         return res;
     }
 
-    private void dfs(int deep, int n, List<List<String>> res, List<Axis> path, StringBuilder builder) {
-        if (path.size() == n) {
-            List<String> temp = new ArrayList<>();
-            for (Axis axis : path) {
-                builder.setCharAt(axis.y, 'Q');
-                temp.add(builder.toString());
-                builder.setCharAt(axis.y, '.');
-            }
 
-            res.add(temp);
-
+    private void dfs(int deep, int n,  List<Axis> path) {
+        if (deep == n) {
+            res++;
             return;
         }
 
@@ -53,7 +40,7 @@ public class P51_N_Queens {
             if (canFillIn(path, cur)) {
                 // 可以填进去才进行递归
                 path.add(cur);
-                dfs(deep + 1, n, res, path, builder);
+                dfs(deep + 1, n, path);
                 path.remove(path.size() - 1);
             }
         }
@@ -69,11 +56,6 @@ public class P51_N_Queens {
             }
         }
         return true;
-    }
-
-    @Test
-    public void test() {
-        solveNQueens(5);
     }
 
 }
