@@ -10,24 +10,24 @@ import org.junit.Test;
 public class P45_Jump_Game_II {
 
     public int jump(int[] nums) {
-        int n = nums.length - 1;
+        int left = 0;
+        int right = 0;
 
-        int jumpCount = 0;
-        int startPos = 0;
-        int endPos = 0;
-        while (endPos < n) {
-            int maxPos = 0;
+        int jumpCnt = 0;
+        while (right < nums.length - 1) {
 
-            for (int i = startPos; i <= endPos; i++) {
-                maxPos = Math.max(nums[i] + i, maxPos);
+            int max = right;
+            for (int i = left; i <= right; i++) {
+                max = Math.max(max, i + nums[i]);
             }
 
-            startPos = endPos + 1;
-            endPos = maxPos;
-            jumpCount++;
+
+            right = max;
+            left++;
+            jumpCnt++;
         }
 
-        return jumpCount;
+        return jumpCnt;
     }
 
     @Test
