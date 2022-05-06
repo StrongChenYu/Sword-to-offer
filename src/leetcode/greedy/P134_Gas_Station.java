@@ -7,19 +7,20 @@ package leetcode.greedy;
 public class P134_Gas_Station {
 
     public int canCompleteCircuit(int[] gas, int[] cost) {
-        int start = 0;
         int total = 0;
+        int start = 0;
         int tank = 0;
 
         for (int i = 0; i < gas.length; i++) {
-            tank += gas[i] - cost[i];
+            int cur = gas[i] - cost[i];
+            total += cur;
+            tank += cur;
             if (tank < 0) {
                 start = i + 1;
-                total += tank;
                 tank = 0;
             }
         }
 
-        return (total + tank) < 0 ? -1 : start;
+        return total < 0 ? -1 : start;
     }
 }
