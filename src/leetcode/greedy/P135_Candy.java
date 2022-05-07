@@ -11,47 +11,20 @@ import java.util.Arrays;
 public class P135_Candy {
 
     public int candy(int[] ratings) {
-        int[] cookies = new int[ratings.length];
-
-        Arrays.fill(cookies, 1);
-        for (int i = 0; i < ratings.length; i++) {
-            int neighMaxCookies = 0;
-            if (i > 0 && ratings[i] > ratings[i - 1]) {
-                neighMaxCookies = Math.max(neighMaxCookies, cookies[i - 1]);
-            }
-
-            if (i + 1 < ratings.length && ratings[i] > ratings[i + 1]) {
-                neighMaxCookies = Math.max(neighMaxCookies, cookies[i + 1]);
-            }
-
-            if (neighMaxCookies != 0) {
-                cookies[i] = neighMaxCookies + 1;
-            }
+        int[] left = new int[ratings.length];
+        int[] right = new int[ratings.length];
+        Arrays.fill(left, 1);
+        Arrays.fill(right, 1);
+        for(int i = 1; i < ratings.length; i++)
+            if(ratings[i] > ratings[i - 1]) left[i] = left[i - 1] + 1;
+        int count = left[ratings.length - 1];
+        for(int i = ratings.length - 2; i >= 0; i--) {
+            if(ratings[i] > ratings[i + 1]) right[i] = right[i + 1] + 1;
+            count += Math.max(left[i], right[i]);
         }
-
-        for (int i = ratings.length - 1; i >= 0; i--) {
-            int neighMaxCookies = 0;
-            if (i > 0 && ratings[i] > ratings[i - 1]) {
-                neighMaxCookies = Math.max(neighMaxCookies, cookies[i - 1]);
-            }
-
-            if (i + 1 < ratings.length && ratings[i] > ratings[i + 1]) {
-                neighMaxCookies = Math.max(neighMaxCookies, cookies[i + 1]);
-            }
-
-            if (neighMaxCookies != 0) {
-                cookies[i] = neighMaxCookies + 1;
-            }
-        }
-
-
-        int sum = 0;
-        for (int i = 0; i < ratings.length; i++) {
-            sum += cookies[i];
-        }
-
-        return sum;
+        return count;
     }
+
 
     @Test
     public void test() {
