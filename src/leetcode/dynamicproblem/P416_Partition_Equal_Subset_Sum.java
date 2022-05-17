@@ -25,37 +25,26 @@ public class P416_Partition_Equal_Subset_Sum {
         // 取一半
         sum = sum >> 1;
         int n = nums.length;
-        boolean[][] dp = new boolean[n][sum + 1];
+        boolean[] dp = new boolean[sum + 1];
 
-        // 初始化第一列
-        for (int i = 0; i < n; i++) {
-            dp[i][0] = true;
-        }
-
-        // 初始化第一行
+        // 默认是0的时候
         if (nums[0] <= sum) {
-            dp[0][nums[0]] = true;
+            dp[nums[0]] = true;
         }
-
 
         for (int i = 1; i < n; i++) {
-            for (int j = 1; j <= sum; j++) {
-                // 不选取当前元素
-                dp[i][j] |= dp[i - 1][j];
-                // 选取当前元素
+            for (int j = sum; j >= 0; j--) {
                 if (j - nums[i] >= 0) {
-                    // 这里不能是i
-                    // 原因是因为如果是i的表示的是当前的行，当前的行会包括当前的元素，也就不满足只能用一次的条件
-                    dp[i][j] |= dp[i - 1][j - nums[i]];
+                    dp[j] |= dp[j - nums[i]];
                 }
             }
         }
 
-        return dp[n - 1][sum];
+        return dp[sum];
     }
 
     @Test
     public void test() {
-        System.out.println(canPartition(new int[]{1,2,5}));
+        System.out.println(canPartition(new int[]{1,1,1,1,1,1,1,1,1}));
     }
 }
