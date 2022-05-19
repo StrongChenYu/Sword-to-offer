@@ -1,4 +1,4 @@
-package leetcode.dynamicproblem;
+package leetcode.dynamicproblem.kp_01;
 
 public class P474_Ones_and_Zeroes {
 

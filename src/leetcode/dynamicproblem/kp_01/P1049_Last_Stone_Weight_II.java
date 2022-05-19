@@ -1,4 +1,4 @@
-package leetcode.dynamicproblem;
+package leetcode.dynamicproblem.kp_01;
 
 import org.junit.Test;
 
