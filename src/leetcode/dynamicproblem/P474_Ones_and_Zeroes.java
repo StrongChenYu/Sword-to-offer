@@ -17,7 +17,7 @@ public class P474_Ones_and_Zeroes {
                     int cnt1 = cnt[1];
 
                     if (j - cnt0 >= 0 && k - cnt1 >= 0) {
-                        dp[i][j][k] = dp[i - 1][j - cnt0][k - cnt1] + 1;
+                        dp[i][j][k] = Math.max(dp[i][j][k], dp[i - 1][j - cnt0][k - cnt1] + 1);
                     }
                 }
             }
