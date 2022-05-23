@@ -15,25 +15,26 @@ import java.util.Set;
 public class P139_Word_Break {
 
     public boolean wordBreak(String s, List<String> wordDict) {
-
-        Set<String> wordSet = new HashSet<>();
-        wordSet.addAll(wordDict);
+        Set<String> wordSet = new HashSet<>(wordDict);
 
         int n = s.length();
-        //表示长度为n的字符串，是不是可以在wordBreak函数中返回true
-
         boolean[] dp = new boolean[n + 1];
         dp[0] = true;
+
         for (int i = 1; i <= n; i++) {
-            //j表示的索引，[j,i)
-            for (int j = i - 1; j >= 0; j--) {
-                if (wordSet.contains(s.substring(j, i))) {
+            // 表示以i结尾的单词
+            for (int j = 0; j <= i; j++) {
+                //[j, i)
+//                System.out.println("start: " + j + " end: " + i + " len: " + len);
+                String rightStr = s.substring(j, i);
+                System.out.println(rightStr);
+                if (wordSet.contains(rightStr)) {
                     dp[i] |= dp[j];
-                    //这个语句有点东西，直接战胜一大堆人
-                    if(dp[i]) break;
                 }
             }
         }
+
+
         return dp[n];
     }
 
