@@ -1,20 +1,24 @@
 package leetcode.dynamicproblem;
 
+import org.junit.Test;
+
 public class P198_House_Robber {
 
     public int rob(int[] nums) {
-        int n = nums.length;
-        int[] dpStole = new int[n];
-        int[] dpNotStole = new int[n];
+        int pre = 0;
+        int cnt = nums[0];
 
-        dpStole[0] = nums[0];
-        dpNotStole[0] = 0;
-
-        for (int i = 1; i < n; i++) {
-            dpStole[i] = Math.max(dpNotStole[i - 1] + nums[i], dpStole[i - 1]);
-            dpNotStole[i] = Math.max(dpStole[i - 1], dpNotStole[i - 1]);
+        for (int i = 1; i < nums.length; i++) {
+            int temp = cnt;
+            cnt = Math.max(cnt, pre + nums[i]);
+            pre = temp;
         }
 
-        return Math.max(dpStole[n - 1], dpNotStole[n - 1]);
+        return cnt;
+    }
+
+    @Test
+    public void test() {
+        System.out.println(rob(new int[]{2,7,9,3,1}));
     }
 }
