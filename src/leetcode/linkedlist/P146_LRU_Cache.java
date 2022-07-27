@@ -7,118 +7,200 @@ import java.util.concurrent.LinkedBlockingDeque;
 
 public class P146_LRU_Cache {
 
-    public class LRUNode {
-        public Integer key;
-        public Integer val;
-        public LRUNode next;
+}
 
-        public LRUNode(int key, int val) {
-            this.key = key;
-            this.val = val;
-        }
-    }
-//
-//    public class LRUList {
-//        private LRUNode head = new LRUNode(-1);
-//        private LRUNode tail = null;
-//        private int size = 0;
-//
-//        public LRUList() {
-//            tail = head;
-//        }
-//
-//        public void insert(LRUNode node) {
-//            tail.next = node;
-//            tail = tail.next;
-//            size++;
-//        }
-//
-//        public void remove(LRUNode node) {
-//            LRUNode next = node.next;
-//            if (next != null) {
-//                node.val = next.val;
-//                node.next = next.next;
-//            }
-//        }
-//
-//        public void removeHead() {
-//            if (head.next != null) {
-//                head.next = head.next.next;
-//            }
-//        }
-//
-//        public int getSize() {
-//            return size;
-//        }
-//    }
+class LRUCache1 {
 
-    public class LRUCache{
+    private class MyCache extends LinkedHashMap<Integer, Integer> {
 
-        private int capacity = 0;
-        private Map<Integer, LRUNode> nodeMap = new HashMap<>();
-        private Deque<LRUNode> nodeList = new LinkedList<>();
-
-        public LRUCache(int capacity) {
+        private int capacity;
+        public MyCache(int capacity) {
+            super(capacity, 0.75f, true);
             this.capacity = capacity;
         }
 
-        public int get(int key) {
-            if (!nodeMap.containsKey(key)) {
-                return -1;
-            }
-            // list插入
-            LRUNode lruNode = nodeMap.get(key);
-            nodeList.remove(lruNode);
-            nodeList.addFirst(lruNode);
-            return lruNode.val;
-        }
-
-        public void put(int key, int value) {
-            if (nodeMap.containsKey(key) && this.get(key) != -1) {
-                nodeMap.get(key).val = value;
-                return;
-            }
-
-            if (nodeList.size() == capacity) {
-                // 删除头节点
-                LRUNode lruNode = nodeList.removeLast();
-                nodeMap.remove(lruNode.key);
-            }
-            LRUNode node = new LRUNode(key, value);
-            nodeMap.put(key, node);
-            nodeList.addFirst(node);
+        @Override
+        protected boolean removeEldestEntry(Map.Entry<Integer, Integer> eldest) {
+            return this.size() > capacity;
         }
     }
-}
 
-class MyLRUCache extends LinkedHashMap<Integer, Integer> {
+    MyCache myCache;
 
-    private int capacity = 0;
-    public MyLRUCache(int capacity) {
-        super(capacity, 0.75F, true);
-        this.capacity = capacity;
-    }
-
-    @Override
-    protected boolean removeEldestEntry(Map.Entry<Integer, Integer> eldest) {
-        return size() > capacity;
-    }
-}
-
-
-class LRUCache{
-
-    MyLRUCache cache;
-
-    public LRUCache(int capacity) {
-        cache = new MyLRUCache(capacity);
+    public LRUCache1(int capacity) {
+        myCache = new MyCache(capacity);
     }
 
     public int get(int key) {
-        return cache.getOrDefault(key, -1);
+        return myCache.getOrDefault(key, -1);
     }
 
     public void put(int key, int value) {
-        cache.put(key, value);
+        myCache.put(key, value);
+    }
+}
+
+class LRUCache2 {
+
+    private class Node {
+        public int key;
+        public int value;
+
+        public Node(int key, int value) {
+            this.key = key;
+            this.value = value;
+        }
+    }
+
+    private HashMap<Integer, Node> map;
+    private Deque<Node> keyList;
+    private int capacity;
+    private int size;
+
+    public LRUCache2(int capacity) {
+        this.capacity = capacity;
+        this.size = 0;
+        map = new HashMap<>();
+        keyList = new LinkedList<>();
+    }
+
+    public int get(int key) {
+        if (map.containsKey(key)) {
+            Node node = map.get(key);
+            keyList.remove(node);
+            keyList.addFirst(node);
+            return node.value;
+        } else {
+            return -1;
+        }
+    }
+
+    public void put(int key, int value) {
+        if (map.containsKey(key)) {
+            Node node = map.get(key);
+            node.value = value;
+            keyList.remove(node);
+            keyList.addFirst(node);
+            return;
+        }
+
+        if (size >= capacity) {
+            Node node = keyList.removeLast();
+            map.remove(node.key);
+            size--;
+        }
+
+        Node node = new Node(key, value);
+        map.put(key, node);
+        keyList.addFirst(node);
+        size++;
+    }
+}
+
+class LRUCache {
+
+    private class Node {
+        public int key;
+        public int value;
+        public Node next;
+        public Node pre;
+
+        public Node(int key, int value) {
+            this.key = key;
+            this.value = value;
+        }
+    }
+
+    private class NodeList {
+        public Node head;
+        public Node tail;
+
+        public NodeList() {
+            this.head = new Node(-1, -1);
+            this.tail = new Node(-1, -1);
+
+            this.head.next = this.tail;
+            this.tail.next = this.head;
+        }
+
+        public void remove(Node node) {
+            Node pre = node.pre;
+            Node next = node.next;
+
+            pre.next = next;
+            next.pre = pre;
+
+            node.pre = null;
+            node.next = null;
+
+        }
+
+        public void addFirst(Node node) {
+            Node first = head.next;
+
+            head.next = node;
+            node.pre = head;
+
+            first.pre = node;
+            node.next = first;
+        }
+
+
+        public Node removeLast() {
+            Node remove = tail.pre;
+            Node pre = remove.pre;
+
+            pre.next = tail;
+            tail.pre = pre;
+
+            remove.pre = null;
+            remove.next = null;
+
+            return remove;
+        }
+    }
+
+    private HashMap<Integer, Node> map;
+    private NodeList nodeList;
+    private int capacity;
+    private int size;
+
+    public LRUCache(int capacity) {
+        this.capacity = capacity;
+        this.size = 0;
+        map = new HashMap<>();
+        nodeList = new NodeList();
+    }
+
+    public int get(int key) {
+        if (map.containsKey(key)) {
+            Node node = map.get(key);
+            nodeList.remove(node);
+            nodeList.addFirst(node);
+            return node.value;
+        } else {
+            return -1;
+        }
+    }
+
+    public void put(int key, int value) {
+        if (map.containsKey(key)) {
+            Node node = map.get(key);
+            node.value = value;
+            nodeList.remove(node);
+            nodeList.addFirst(node);
+            return;
+        }
+
+        if (size >= capacity) {
+            Node node = nodeList.removeLast();
+            map.remove(node.key);
+            size--;
+        }
+
+        Node node = new Node(key, value);
+        map.put(key, node);
+        nodeList.addFirst(node);
+        size++;
     }
 }
